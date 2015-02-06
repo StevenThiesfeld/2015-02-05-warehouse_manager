@@ -49,13 +49,14 @@ class Product
   
   #searches for products based on a user's selected field
   def self.search_where(search_for, user_search)
+    search = nil
     if user_search.is_a?(Integer)
-      search = "#{user_search}"
+      search = user_search
     else search = "'#{user_search}'"
     end
       
     search_results = []
-    results = DATABASE.execute("SELECT * FROM products WHERE '#{search_for}' = #{search}")
+    results = DATABASE.execute("SELECT * FROM products WHERE #{search_for} = #{search}")
     results.each do |r|
       search_results << self.new(r)
     end
