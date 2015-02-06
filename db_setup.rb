@@ -13,7 +13,7 @@ DATABASE.execute("CREATE TABLE IF NOT EXISTS categories (id INTEGER PRIMARY KEY,
                  name TEXT NOT NULL, manufacturer TEXT)")
                   
 DATABASE.execute("CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY, 
-                  serial number TEXT NOT NULL, name TEXT NOT NULL, description TEXT,
+                  serial_number TEXT NOT NULL, name TEXT NOT NULL, description TEXT,
                   cost INTEGER NOT NULL, quantity INTEGER NOT NULL CHECK(quantity >= 0),
                   location_id INTEGER, category_id INTEGER,
                   FOREIGN KEY(category_id) REFERENCES categories(id),
