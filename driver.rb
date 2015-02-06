@@ -20,15 +20,15 @@ until input.downcase == "quit"
   when "1"
     add_location
   when "2"
-    #methods
+    #edit location
   when "3"
     delete_location
   when "4"
     add_product
   when "5"
-    #methodsmethodsmethods
+    #edit product
   when "6"
-    #methodsmethodsmethods
+    #delete product
   when "7"
     menu_prompt
  else

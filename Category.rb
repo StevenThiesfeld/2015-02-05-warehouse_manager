@@ -1,3 +1,4 @@
 class Category
   
-end
+  
+end#classend
