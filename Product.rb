@@ -1,5 +1,3 @@
-require 'pry'
-require_relative 'db_setup'
 class Product
   attr_reader :id, :serial_number, :name, :description, :cost, :quantity, :location_id, :category_id
   def initialize(options)
@@ -11,31 +9,24 @@ class Product
     @location_id = options[:location_id]
     @category_id = options[:category_id]
   end
-  
-  def save_record
-    save
-  end
    
   def self.edit_record(changed_item, column_name, new_value)
     DATABASE.execute("UPDATE products SET '#{column_name}' = '#{new_value}' 
-                      WHERE id = '#{changed_item}' ")
+                      WHERE id = #{changed_item} ")
   end
   
   def self.delete_record(id_to_remove)
-    DATABASE.execute("DELETE FROM products WHERE #{id_to_remove} = id")
+    DATABASE.execute("DELETE FROM products WHERE id = #{id_to_remove}")
   end
   
  
   end
   
-  private
-  def save 
+  def insert_record 
     attributes = []
     values = []
-        # Example  [:@name, :@age, :@hometown]
     instance_variables.each do |i|
-          # Example  :@name
-      attributes << i.to_s.delete("@") # "name"
+      attributes << i.to_s.delete("@") 
     end
         
     attributes.each do |a|

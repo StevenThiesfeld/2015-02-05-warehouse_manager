@@ -14,7 +14,9 @@ class Location
   end 
   
   def self.delete_record(id_to_remove)
+    if DATABASE.execute("SELECT id FROM products WHERE location_id = #{id_to_remove}") == []
     DATABASE.execute("DELETE FROM locations WHERE #{id_to_remove} = id")
+    end
   end
     
   private
@@ -43,4 +45,3 @@ end
     
   
 end
-
