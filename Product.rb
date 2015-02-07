@@ -69,8 +69,8 @@ class Product
 #     DATABASE.execute("UPDATE #{table} SET #{query_string} WHERE id = #{id}")
 #   end
    
-  def self.find(id_to_find)
-    result = DATABASE.execute("SELECT * FROM products WHERE id = #{id_to_find}")
+  def self.find(table, id_to_find)
+    result = DATABASE.execute("SELECT * FROM #{table} WHERE id = #{id_to_find}")
     record_details = result[0]
     self.new(record_details)
   end

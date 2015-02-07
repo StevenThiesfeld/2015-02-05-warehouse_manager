@@ -2,11 +2,11 @@ require 'sqlite3'
 require 'pry'
 DATABASE = SQLite3::Database.new('test_warehouse_database.db')
 require 'minitest/autorun'
+require_relative "database_methods"
 require_relative 'db_setup'
 require_relative "product"
 require_relative "location"
 require_relative "category"
-require_relative "database_methods"
 
 class TestProduct < Minitest::Test
   

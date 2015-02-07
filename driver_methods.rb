@@ -1,4 +1,28 @@
 module DriverMethods
+  
+  def menu_prompt
+    puts "WELCOME TO THE WAREHOUSE MANAGEMENT SUITE"
+    puts "-"*60
+    puts "TO CREATE, EDIT OR DELETE A LOCATION: TYPE 1"
+    puts "-"*60
+    puts "TO CREATE, EDIT OR DELETE A PRODUCT: TYPE 2"
+    puts "-"*60
+    puts "TO CREATE, EDIT OR DELETE A CATEGORY: TYPE 3"
+    puts "-"*60
+    puts "TO RUN A SEARCH: TYPE 4"
+    puts "-"*60
+    puts "TYPE QUIT TO EXIT THE PROGRAM"
+  end
+  
+  def submenu(var)
+    puts "TO CREATE A NEW #{var}: TYPE 1"
+    puts "-"*60
+    puts "TO EDIT AN EXISTING #{var}: TYPE 2"
+    puts "-"*60
+    puts "TO DELETE A #{var}: TYPE 3"
+    puts "-"*60
+    puts "TO RETURN TO THE PREVIOUS MENU: TYPE ANYTHING ELSE"
+  end  
 
   def add_location
     puts "ENTER LOCATION NAME"
@@ -10,7 +34,36 @@ module DriverMethods
     verify = gets.chomp
     if verify == "1"
       location.insert("locations")
-      puts "LOCATION SAVED ID ##{location.id}"
+      puts "LOCATION SAVED TO ID ##{location.id}"
+    else puts "PROCESS CANCELLED"
+    end
+  end
+  
+  def edit_location
+    location_list
+    puts "ENTER LOCATION TO EDIT(BY NUMBER)"
+    location_to_edit = gets.to_i
+    location = Location.find("locations", location_to_edit)
+    location.list_attributes.each do |a|
+      puts "--#{a}--"
+    end
+    to_edit = ""
+    until to_edit.downcase == "no"
+      puts "ENTER FIELD TO EDIT"
+      raw_edit = gets.chomp
+      to_edit = raw_edit.insert(0, "@")
+      puts "ENTER CHANGE"
+      raw_change = gets.chomp
+      raw_change.to_i == 0 ? change = raw_change : change = raw_change.to_i
+      location.instance_variable_set(to_edit, change)
+      puts "EDIT ANOTHER FIELD?"
+      to_edit = gets.chomp
+    end
+    puts "PRESS 1 TO SAVE CHANGES, PRESS ANYTHING ELSE TO CANCEL"
+    verify = gets.chomp
+    if verify == "1"
+      location.save("locations")
+      puts "CHANGES SAVED"
     else puts "PROCESS CANCELLED"
     end
   end
@@ -26,64 +79,7 @@ module DriverMethods
       puts "LOCATION ID #{location_to_delete} DELETED"
     else puts "PROCESS CANCELLED"
     end
-  end
-    
-  
-  def menu_prompt
-    puts "WELCOME TO THE WAREHOUSE MANAGEMENT SUITE"
-    puts "-"*60
-    puts "TO CREATE A NEW LOCATION: TYPE 1"
-    puts "-"*60
-    puts "TO EDIT A LOCATION\'S DATA: TYPE 2"
-    puts "-"*60
-    puts "TO DELETE A LOCATION: TYPE 3"
-    puts "-"*60
-    puts "TO CREATE A NEW PRODUCT: TYPE 4"
-    puts "-"*60
-    puts "TO EDIT A PRODUCT\'S DATA: TYPE 5"
-    puts "-"*60
-    puts "TO DELETE A PRODUCT: TYPE 6"
-    puts "-"*60
-    puts "TO SEE THIS MENU AGAIN TYPE 7"
-    puts "-"*60
-    puts "TYPE QUIT TO EXIT THE PROGRAM"
-  end
-  
-  # def add_product
- #    valid = 0
- #    puts "ENTER PRODUCT SERIAL NUMBER"
- #    serial_number = gets.to_i
- #    puts "ENTER PRODUCT NAME"
- #    name = gets.chomp
- #    puts "ENTER PRODUCT DESCRIPTION"
- #    description = gets.chomp
- #    puts "ENTER PRODUCT COST"
- #    cost = gets.to_i
- #    until valid == 1
- #      puts "ENTER PRODUCT QUANTITY"
- #      quantity = gets.to_i
- #      if quantity > 0
- #       valid = 1
- #      end
- #    end
- #    puts "ENTER LOCATION ID"
- #    location_id = gets.to_i
- #
- #    puts "ENTER CATEGORY ID"
- #    category_id = gets.to_i
- #    new_product = Product.new({"serial_number" => serial_number, "name" => name,
- #       "description" => description, "cost" => cost, "quantity" => quantity,
- #        "location_id" => location_id, "category_id" => category_id })
- #
- #    puts "PRESS 1 TO SAVE PRODUCT"
- #    puts "PRESS ANYTHING OTHER THAN 1 TO CANCEL CREATION"
- #    verify = gets.chomp
- #    if verify == "1"
- #      new_product.insert
- #      puts "PRODUCT SAVED, PRODUCT ID IS #{new_product.id}"
- #    else puts "PROCESS CANCELLED"
- #    end
- #  end
+  end    
   
   def add_product
     good_serial = 0
@@ -139,11 +135,8 @@ module DriverMethods
       end
     end
     
-    locations = DATABASE.execute("SELECT * FROM locations")  
-    locations.each do |l|
-      binding.pry
-      puts "#{l["id"]}---------#{l["name"]}"
-    end
+    location_list
+    
     until good_location_id == 1  
       puts "ASSIGN NEW PRODUCT TO A LOCATION(BY NUMBER)"
         location_id = gets.to_i
@@ -153,8 +146,10 @@ module DriverMethods
       end
     end
     
+    category_list
+    
     until good_category_id == 1      
-      puts "ENTER PRODUCT CATEGORY_ID"
+      puts "ASSIGN NEW PRODUCT TO LOCATION(BY NUMBER)"
         category_id = gets.to_i
       if category_id >= 0
         good_category_id = 1
@@ -175,4 +170,19 @@ module DriverMethods
     else puts "PROCESS CANCELLED"
     end
   end
+  
+  def location_list
+    locations = DATABASE.execute("SELECT * FROM locations")  
+    locations.each do |l|
+      puts "#{l["id"]}---------#{l["name"]}"
+    end
+  end
+  
+  def category_list
+    categories = DATABASE.execute("SELECT * FROM categories")  
+    categories.each do |c|
+      puts "#{c["id"]}---------#{c["name"]}"
+    end
+  end
+    
 end#module_end

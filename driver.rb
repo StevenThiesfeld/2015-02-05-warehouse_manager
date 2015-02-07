@@ -2,11 +2,11 @@ require 'pry'
 require 'sqlite3'
 DATABASE = SQLite3::Database.new('warehouse_database.db')
 require_relative "db_setup"
+require_relative "database_methods"
 require_relative 'location'
 require_relative 'category'
 require_relative "product"
 require_relative "driver_methods"
-require_relative "database_methods"
 include DriverMethods
 
 binding.pry
@@ -15,23 +15,29 @@ menu_prompt
 
 input = ""
 until input.downcase == "quit"
+  puts "ENTER MENU SELECTION"
   input = gets.chomp
 
   case input
   when "1"
-    add_location
+    submenu("LOCATION")
+    sub_input = gets.chomp
+    case sub_input
+    when "1"
+      add_location
+    when "2"
+      edit_location
+    when "3"
+      delete_location
+    else puts "RETURNING TO MAIN MENU"
+    end
+    
   when "2"
-    #edit location
+    submenu("PRODUCT")
   when "3"
-    delete_location
+    submenu("CATEGORY")
   when "4"
-    add_product
-  when "5"
-    #edit product
-  when "6"
-    #delete product
-  when "7"
-    menu_prompt
+    search_submenu
  else
    if input.downcase == "quit"
      puts "GOOD-BYE"
