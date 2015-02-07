@@ -9,7 +9,7 @@ module DriverMethods
     puts "IF THIS IS INCORRECT PRESS ANYTHING OTHER THAN 1 TO CANCEL CREATION"
     verify = gets.chomp
     if verify == "1"
-      location.insert
+      location.insert("locations")
       puts "LOCATION SAVED ID ##{location.id}"
     else puts "PROCESS CANCELLED"
     end
@@ -26,7 +26,7 @@ module DriverMethods
       puts "LOCATION ID #{location_to_delete} DELETED"
     else puts "PROCESS CANCELLED"
     end
-    end
+  end
     
   
   def menu_prompt
@@ -49,110 +49,115 @@ module DriverMethods
     puts "TYPE QUIT TO EXIT THE PROGRAM"
   end
   
-  def add_product
-    valid = 0
-    puts "ENTER PRODUCT SERIAL NUMBER"
-    serial_number = gets.to_i
-    puts "ENTER PRODUCT NAME"
-    name = gets.chomp
-    puts "ENTER PRODUCT DESCRIPTION"
-    description = gets.chomp
-    puts "ENTER PRODUCT COST"
-    cost = gets.to_i
-    until valid == 1
-      puts "ENTER PRODUCT QUANTITY"
-      quantity = gets.to_i
-      if quantity > 0
-       valid = 1
-      end
-    end
-    puts "ENTER LOCATION ID"
-    location_id = gets.to_i
-    
-    puts "ENTER CATEGORY ID"
-    category_id = gets.to_i
-    new_product = Product.new({"serial_number" => serial_number, "name" => name,
-       "description" => description, "cost" => cost, "quantity" => quantity,
-        "location_id" => location_id, "category_id" => category_id })
-    
-    puts "PRESS 1 TO SAVE PRODUCT"
-    puts "PRESS ANYTHING OTHER THAN 1 TO CANCEL CREATION"
-    verify = gets.chomp
-    if verify == "1"
-      new_product.insert
-      puts "PRODUCT SAVED, PRODUCT ID IS #{new_product.id}"
-    else puts "PROCESS CANCELLED"
-    end
-  end
+  # def add_product
+ #    valid = 0
+ #    puts "ENTER PRODUCT SERIAL NUMBER"
+ #    serial_number = gets.to_i
+ #    puts "ENTER PRODUCT NAME"
+ #    name = gets.chomp
+ #    puts "ENTER PRODUCT DESCRIPTION"
+ #    description = gets.chomp
+ #    puts "ENTER PRODUCT COST"
+ #    cost = gets.to_i
+ #    until valid == 1
+ #      puts "ENTER PRODUCT QUANTITY"
+ #      quantity = gets.to_i
+ #      if quantity > 0
+ #       valid = 1
+ #      end
+ #    end
+ #    puts "ENTER LOCATION ID"
+ #    location_id = gets.to_i
+ #
+ #    puts "ENTER CATEGORY ID"
+ #    category_id = gets.to_i
+ #    new_product = Product.new({"serial_number" => serial_number, "name" => name,
+ #       "description" => description, "cost" => cost, "quantity" => quantity,
+ #        "location_id" => location_id, "category_id" => category_id })
+ #
+ #    puts "PRESS 1 TO SAVE PRODUCT"
+ #    puts "PRESS ANYTHING OTHER THAN 1 TO CANCEL CREATION"
+ #    verify = gets.chomp
+ #    if verify == "1"
+ #      new_product.insert
+ #      puts "PRODUCT SAVED, PRODUCT ID IS #{new_product.id}"
+ #    else puts "PROCESS CANCELLED"
+ #    end
+ #  end
   
   def add_product
-    good_serial = false
-    good_name = false
-    good_description = false
-    good_cost = false
-    good_quantity = false
-    good_location_id = false
-    good_category_id = false
+    good_serial = 0
+    good_name = 0
+    good_description = 0
+    good_cost = 0
+    good_quantity = 0
+    good_location_id = 0
+    good_category_id = 0
       
-    until good_serial == true
+    until good_serial == 1
       puts "ENTER PRODUCT SERIAL NUMBER"
       serial_number = gets.chomp
       if !serial_number.empty?
-        good_serial == true
+        good_serial = 1
       else puts "ERROR. INVALID INPUT."
       end
     end
     
-    until good_name == true      
+    until good_name == 1      
       puts "ENTER PRODUCT NAME"
       name = gets.chomp
       if !name.empty?
-        good_name = true
+        good_name = 1
       else puts "ERROR. INVALID INPUT."
       end
     end
     
-    until good_description == true      
+    until good_description == 1      
       puts "ENTER PRODUCT DESCRIPTION"
         description = gets.chomp
       if !description.empty?
-        good_description = true
+        good_description = 1
       else puts "ERROR. INVALID INPUT."
       end
     end
     
-    until good_cost == true      
+    until good_cost == 1      
       puts "ENTER PRODUCT COST"
         cost = gets.to_i
       if cost != 0
-        good_cost = true
+        good_cost = 1
       else puts "ERROR. INVALID INPUT."
       end
     end
     
-    until good_quantity == true      
+    until good_quantity == 1      
       puts "ENTER PRODUCT QUANTITY"
         quantity = gets.to_i
-      if quantity != 0
-        good_quantity = true
+      if quantity >= 0
+        good_quantity = 1
       else puts "ERROR. INVALID INPUT."
       end
     end
     
-    until good_location_id == true      
-      puts "ENTER PRODUCT LOCATION_ID"
+    locations = DATABASE.execute("SELECT * FROM locations")  
+    locations.each do |l|
+      binding.pry
+      puts "#{l["id"]}---------#{l["name"]}"
+    end
+    until good_location_id == 1  
+      puts "ASSIGN NEW PRODUCT TO A LOCATION(BY NUMBER)"
         location_id = gets.to_i
-      if location_id != 0
-        good_location_id = true
+      if location_id >= 0
+        good_location_id = 1
       else puts "ERROR. INVALID INPUT."
       end
     end
     
-    until good_category_id == true      
+    until good_category_id == 1      
       puts "ENTER PRODUCT CATEGORY_ID"
         category_id = gets.to_i
-      if category_id != 0
-        good_category_id = true
+      if category_id >= 0
+        good_category_id = 1
       else puts "ERROR. INVALID INPUT."
       end
     end
@@ -165,7 +170,7 @@ module DriverMethods
     puts "PRESS ANYTHING OTHER THAN 1 TO CANCEL CREATION"
     verify = gets.chomp
     if verify == "1"
-      new_product.insert
+      new_product.insert("products")
       puts "PRODUCT SAVED, PRODUCT ID IS #{new_product.id}"
     else puts "PROCESS CANCELLED"
     end

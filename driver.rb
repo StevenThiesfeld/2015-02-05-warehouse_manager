@@ -2,10 +2,11 @@ require 'pry'
 require 'sqlite3'
 DATABASE = SQLite3::Database.new('warehouse_database.db')
 require_relative "db_setup"
-require_relative 'Location'
-require_relative 'Category'
-require_relative "Product"
+require_relative 'location'
+require_relative 'category'
+require_relative "product"
 require_relative "driver_methods"
+require_relative "database_methods"
 include DriverMethods
 
 binding.pry
