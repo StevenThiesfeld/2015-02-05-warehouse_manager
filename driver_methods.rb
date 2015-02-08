@@ -206,7 +206,29 @@ module DriverMethods
     else puts "PROCESS CANCELLED"
     end
   end    
+  
+  def add_category
+    puts "ENTER CATEGORY NAME"
+    name = gets.chomp
+    location = Location.new("name" => name)
+    puts "YOU HAVE ENTERED #{location.name}"
+    puts "IF THIS IS CORRECT PRESS 1"
+    puts "IF THIS IS INCORRECT PRESS ANYTHING OTHER THAN 1 TO CANCEL CREATION"
+    verify = gets.chomp
+    if verify == "1"
+      location.insert("locations")
+      puts "LOCATION SAVED TO ID ##{location.id}"
+    else puts "PROCESS CANCELLED"
+    end
+  end  
+  
+  def edit_category
     
+  end
+  
+  def delete_category
+    
+  end
   
   def location_list
     locations = DATABASE.execute("SELECT * FROM locations")  
@@ -266,8 +288,7 @@ module DriverMethods
     else puts "INVALID FIELD"
     end
   end
-  
-  
+
   def enter_edit(object, field, change)
     object.instance_variable_set(field, change)
   end

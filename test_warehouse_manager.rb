@@ -115,7 +115,7 @@ class TestDriver < Minitest::Test
         "description" => "sliced", "cost" => 300, "quantity" => 100,
          "location_id" => 1, "category_id" => 2})
     t1.insert("products")    
-    verify_edit(t1, "quantity", -5)
+    verify_edit(t1, "qlaplhit", 20)
     assert_equal(t1.quantity, 20)
   end
 end#classend

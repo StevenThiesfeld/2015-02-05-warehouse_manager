@@ -44,8 +44,20 @@ until input.downcase == "quit"
       delete_product
     else puts "RETURNING TO MAIN MENU"
     end
+    
   when "3"
     submenu("CATEGORY")
+    sub_input = gets.chomp
+    case sub_input
+    when "1"
+      add_category
+    when "2"
+      edit_category
+    when "3"
+      delete_category
+    else puts "RETURNING TO MAIN MENU"
+    end
+    
   when "4"
     search_submenu
  else

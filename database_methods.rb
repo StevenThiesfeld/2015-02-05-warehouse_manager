@@ -91,6 +91,7 @@ module DatabaseMethods
   
   def display_attributes
     attributes = list_attributes
+    puts "FIELD---------VALUE"
     attributes.each do |a|
       puts "#{a}--------#{self.send(a)}"
     end
