@@ -34,6 +34,16 @@ until input.downcase == "quit"
     
   when "2"
     submenu("PRODUCT")
+    sub_input = gets.chomp
+    case sub_input
+    when "1"
+      add_product
+    when "2"
+      edit_product
+    when "3"
+      delete_product
+    else puts "RETURNING TO MAIN MENU"
+    end
   when "3"
     submenu("CATEGORY")
   when "4"
@@ -44,7 +54,7 @@ until input.downcase == "quit"
    else puts "INVALID INPUT, TRY AGAIN"
    end
  end
-    
+  menu_prompt 
 end
 
 

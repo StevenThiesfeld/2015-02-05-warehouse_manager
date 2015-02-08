@@ -29,46 +29,10 @@ class Location
   attr_accessor :name
   
   def initialize(options)
-    @name = options["name"]
     @id = options["id"]
+    @name = options["name"]
   end
   
-  # def self.find(search_for, user_search)
- #    if user_search.is_a?(Integer)
- #      search = "#{user_search}"
- #    else search = "'#{user_search}'"
- #    result = DATABASE.execute("SELECT * FROM locations WHERE #{search_for} = #{search}")
- #    record_details = result[0]
- #    self.new(record_details)
- #    end
- #  end
-      
-  # # def save
- #    attributes = []
- #
- #    # Example  [:@serial_number, :@name, :@description]
- #    instance_variables.each do |i|
- #      # Example  :@name
- #      attributes << i.to_s.delete("@") # "name"
- #    end
- #
- #    query_components_array = []
- #
- #    attributes.each do |a|
- #      value = self.send(a)
- #
- #      if value.is_a?(Integer)
- #        query_components_array << "#{a} = #{value}"
- #      else
- #        query_components_array << "#{a} = '#{value}'"
- #      end
- #    end
- #
- #    query_string = query_components_array.join(", ")
- #
- #    DATABASE.execute("UPDATE locations SET #{query_string} WHERE id = #{id}")
- #  end
- 
  # Public: .delete_record
  # Deletes a location only if it is empty.
  #
@@ -87,11 +51,4 @@ class Location
     end
   end
     
-  # def insert
-  #
-  #   DATABASE.execute("INSERT INTO locations (name) VALUES ('#{@name}')")
-  #   @id = DATABASE.last_insert_row_id
-  # end
-    
-  
 end#classend

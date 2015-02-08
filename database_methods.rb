@@ -88,6 +88,13 @@ module DatabaseMethods
     end
     attributes
   end
+  
+  def display_attributes
+    attributes = list_attributes
+    attributes.each do |a|
+      puts "#{a}--------#{self.send(a)}"
+    end
+  end
     
   
 end#module_end
@@ -161,7 +168,7 @@ module ClassMethods
   def find(table, id_to_find)
     result = DATABASE.execute("SELECT * FROM #{table} WHERE id = #{id_to_find}")
     record_details = result[0]
-    self.new(record_details)
+    self.new(record_details) if record_details != nil
   end
   
 end#module_end

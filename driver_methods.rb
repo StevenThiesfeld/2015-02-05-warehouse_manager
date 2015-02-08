@@ -44,20 +44,16 @@ module DriverMethods
     puts "ENTER LOCATION TO EDIT(BY NUMBER)"
     location_to_edit = gets.to_i
     location = Location.find("locations", location_to_edit)
-    location.list_attributes.each do |a|
-      puts "--#{a}--"
-    end
-    to_edit = ""
-    until to_edit.downcase == "no"
+    location.display_attributes
+    raw_field = ""
+    until raw_field.downcase == "done"
       puts "ENTER FIELD TO EDIT"
-      raw_edit = gets.chomp
-      to_edit = raw_edit.insert(0, "@")
+      raw_field = gets.chomp
       puts "ENTER CHANGE"
       raw_change = gets.chomp
-      raw_change.to_i == 0 ? change = raw_change : change = raw_change.to_i
-      location.instance_variable_set(to_edit, change)
-      puts "EDIT ANOTHER FIELD?"
-      to_edit = gets.chomp
+      verify_edit(location, raw_field, raw_change)
+      puts "ENTER ANOTHER FIELD TO EDIT(TYPE DONE TO FINISH)"
+      raw_field = gets.chomp
     end
     puts "PRESS 1 TO SAVE CHANGES, PRESS ANYTHING ELSE TO CANCEL"
     verify = gets.chomp
@@ -69,6 +65,7 @@ module DriverMethods
   end
   
   def delete_location
+    location_list
     puts "ENTER LOCATION ID TO DELETE"
     location_to_delete = gets.to_i
     puts "ARE YOU SURE YOU WANT TO DO THIS?"
@@ -76,7 +73,7 @@ module DriverMethods
     verify = gets.chomp
     if verify == "1"
       Location.delete_record(location_to_delete)
-      puts "LOCATION ID #{location_to_delete} DELETED"
+      puts "LOCATION ##{location_to_delete} DELETED"
     else puts "PROCESS CANCELLED"
     end
   end    
@@ -120,7 +117,7 @@ module DriverMethods
     until good_cost == 1      
       puts "ENTER PRODUCT COST"
         cost = gets.to_i
-      if cost != 0
+      if cost >= 0
         good_cost = 1
       else puts "ERROR. INVALID INPUT."
       end
@@ -140,20 +137,20 @@ module DriverMethods
     until good_location_id == 1  
       puts "ASSIGN NEW PRODUCT TO A LOCATION(BY NUMBER)"
         location_id = gets.to_i
-      if location_id >= 0
+      if Location.find("locations", location_id) != nil
         good_location_id = 1
-      else puts "ERROR. INVALID INPUT."
+      else puts "ERROR. LOCATION DOES NOT EXIST."
       end
     end
     
     category_list
     
     until good_category_id == 1      
-      puts "ASSIGN NEW PRODUCT TO LOCATION(BY NUMBER)"
+      puts "ASSIGN NEW PRODUCT TO A CATEGORY(BY NUMBER)"
         category_id = gets.to_i
-      if category_id >= 0
+      if Category.find("categories", category_id) != nil
         good_category_id = 1
-      else puts "ERROR. INVALID INPUT."
+      else puts "ERROR. CATEGORY DOES NOT EXIST."
       end
     end
     
@@ -171,6 +168,46 @@ module DriverMethods
     end
   end
   
+  def edit_product
+    product_list
+    puts "ENTER PRODUCT TO EDIT(BY NUMBER)"
+    product_to_edit = gets.to_i
+    product = Product.find("products", product_to_edit)
+    product.display_attributes
+    raw_field = ""
+    until raw_field.downcase == "done"
+      puts "ENTER FIELD TO EDIT"
+      raw_field = gets.chomp
+      puts "ENTER CHANGE"
+      raw_change = gets.chomp
+      verify_edit(product, raw_field, raw_change)
+      puts "ENTER ANOTHER FIELD TO EDIT(TYPE DONE TO FINISH)"
+      raw_field = gets.chomp
+    end
+    puts "PRESS 1 TO SAVE CHANGES, PRESS ANYTHING ELSE TO CANCEL"
+    verify = gets.chomp
+    if verify == "1"
+      product.save("products")
+      puts "CHANGES SAVED"
+    else puts "PROCESS CANCELLED"
+    end
+  end
+  
+  def delete_product
+    product_list
+    puts "ENTER PRODUCT ID TO DELETE"
+    product_to_delete = gets.to_i
+    puts "ARE YOU SURE YOU WANT TO DO THIS?"
+    puts "PRESS 1 TO CONTINUE, PRESS ANYTHING OTHER THAN 1 TO CANCEL DELETION"
+    verify = gets.chomp
+    if verify == "1"
+      Product.delete_record(product_to_delete)
+      puts "PRODUCT ##{product_to_delete} DELETED"
+    else puts "PROCESS CANCELLED"
+    end
+  end    
+    
+  
   def location_list
     locations = DATABASE.execute("SELECT * FROM locations")  
     locations.each do |l|
@@ -184,5 +221,54 @@ module DriverMethods
       puts "#{c["id"]}---------#{c["name"]}"
     end
   end
-    
+  
+  def product_list
+    products = DATABASE.execute("SELECT * FROM products")
+    products.each do |p|
+      puts "#{p["id"]}---------#{p["name"]}"
+    end
+  end
+  
+  def verify_edit(object, raw_field, raw_change)
+    if object.list_attributes.include?(raw_field)
+      good_change = false
+      case raw_field
+      when "cost", "quantity"
+        if raw_change.to_i >= 0
+          change = raw_change.to_i 
+          good_change = true
+        else puts "INVALID ENTRY"
+        end
+      
+      when "location_id"
+        if Location.find("locations", raw_change.to_i) != nil
+          change = raw_change.to_i
+          good_change = true
+        else puts "THAT LOCATION DOES NOT EXIST"
+        end
+      
+      when "category_id"
+        if Category.find("categories", raw_change.to_i) != nil
+          change = raw_change.to_i
+          good_change = true
+        else puts "THAT CATEGORY DOES NOT EXIST"
+        end  
+      else 
+        if raw_change.to_i != 0
+          change = raw_change
+          good_change = true
+        else puts "INVALID ENTRY"
+        end
+      end 
+          
+      field = raw_field.insert(0, "@")
+      enter_edit(object, field, change) if good_change == true
+    else puts "INVALID FIELD"
+    end
+  end
+  
+  
+  def enter_edit(object, field, change)
+    object.instance_variable_set(field, change)
+  end
 end#module_end

@@ -2,6 +2,7 @@ require 'sqlite3'
 require 'pry'
 DATABASE = SQLite3::Database.new('test_warehouse_database.db')
 require 'minitest/autorun'
+require_relative "driver_methods"
 require_relative "database_methods"
 require_relative 'db_setup'
 require_relative "product"
@@ -92,3 +93,31 @@ class TestLocation < Minitest::Test
   
 end#classend
 
+class TestDriver < Minitest::Test
+  include DriverMethods
+  
+  def setup
+    DATABASE.execute("DELETE from products")
+    #DATABASE.execute("DELETE from catergories")
+    DATABASE.execute("DELETE from locations")
+  end
+  
+  def test_verify_edit
+    t1 = Product.new({"serial_number" => "77sdfd7", "name" => "bread",
+        "description" => "sliced", "cost" => 300, "quantity" => 100,
+         "location_id" => 1, "category_id" => 2})
+    t1.insert("products")    
+    verify_edit(t1, "location_id", 20)
+    assert_equal(t1.location_id, 20)
+  end
+  def test_verify_edit_fails
+    t1 = Product.new({"serial_number" => "77sdfd7", "name" => "bread",
+        "description" => "sliced", "cost" => 300, "quantity" => 100,
+         "location_id" => 1, "category_id" => 2})
+    t1.insert("products")    
+    verify_edit(t1, "quantity", -5)
+    assert_equal(t1.quantity, 20)
+  end
+end#classend
+    
+    

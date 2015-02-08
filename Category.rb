@@ -3,8 +3,8 @@ class Category
   extend ClassMethods
   
   def initialize(options)
-    @name = options["name"]
     @id = options["id"]
+    @name = options["name"] 
   end
   
   def self.delete_record(id_to_remove)
