@@ -106,7 +106,7 @@ end#module_end
 
 module ClassMethods
   
-  # Public: .delete_records
+  # Public: .delete_record
     # Deletes item(s) from the database based on the search criteria.
     #
     # Parameters:
@@ -176,16 +176,6 @@ module ClassMethods
     self.new(record_details) if record_details != nil
   end
   
-  def list_attributes_with_id
-    attributes = []
-
-    # Example  [:@serial_number, :@name, :@description]
-    instance_variables.each do |i|
-      # Example  :@name
-      attributes << i.to_s.delete("@")
-    end
-    attributes
-  end
   
 end#module_end
 

@@ -43,29 +43,31 @@ module DriverMethods
      end
    end
   
-  def edit_location
-    location_list
-    puts "ENTER LOCATION TO EDIT(BY NUMBER)"
-    location_to_edit = gets.to_i
-    location = Location.find("locations", location_to_edit)
-    location.display_attributes
-    raw_field = ""
-    until raw_field.downcase == "done"
-      puts "ENTER FIELD TO EDIT"
-      raw_field = gets.chomp
-      puts "ENTER CHANGE"
-      raw_change = gets.chomp
-      verify_edit(location, raw_field, raw_change)
-      puts "ENTER ANOTHER FIELD TO EDIT(TYPE DONE TO FINISH)"
-      raw_field = gets.chomp
-    end
-    puts "PRESS 1 TO SAVE CHANGES, PRESS ANYTHING ELSE TO CANCEL"
-    verify = gets.chomp
-    if verify == "1"
-      location.save("locations")
-      puts "CHANGES SAVED"
-    else puts "PROCESS CANCELLED"
-    end
+   def edit_location
+     location_list
+     puts "ENTER LOCATION TO EDIT(BY NUMBER)"
+     location_to_edit = gets.to_i
+     location = Location.find("locations", location_to_edit)
+     location.display_attributes
+     raw_field = ""
+     until raw_field.downcase == "done"
+       puts "ENTER FIELD TO EDIT"
+       raw_field = gets.chomp
+       puts "ENTER CHANGE"
+       raw_change = gets.chomp
+       verify_edit(location, raw_field, raw_change)
+       puts "ENTER ANOTHER FIELD TO EDIT(TYPE DONE TO FINISH)"
+       raw_field = gets.chomp
+     end
+     puts "PRESS 1 TO SAVE CHANGES, PRESS ANYTHING ELSE TO CANCEL"
+     verify = gets.chomp
+     if verify == "1"
+       location.save("locations")
+       puts "CHANGES SAVED"
+       puts "HERE IS THE UPDATED LOCATIONS LIST:\n"
+       location_list
+     else puts "PROCESS CANCELLED"
+     end
   end
   
   def delete_location
@@ -92,94 +94,96 @@ module DriverMethods
      result.display_attributes
    end
    
-  def add_product
-    good_serial = 0
-    good_name = 0
-    good_description = 0
-    good_cost = 0
-    good_quantity = 0
-    good_location_id = 0
-    good_category_id = 0
-      
-    until good_serial == 1
-      puts "ENTER PRODUCT SERIAL NUMBER"
-      serial_number = gets.chomp
-      if !serial_number.empty?
-        good_serial = 1
-      else puts "ERROR. INVALID INPUT."
-      end
-    end
+   def add_product
+     good_serial = 0
+     good_name = 0
+     good_description = 0
+     good_cost = 0
+     good_quantity = 0
+     good_location_id = 0
+     good_category_id = 0
     
-    until good_name == 1      
-      puts "ENTER PRODUCT NAME"
-      name = gets.chomp
-      if !name.empty?
-        good_name = 1
-      else puts "ERROR. INVALID INPUT."
-      end
-    end
-    
-    until good_description == 1      
-      puts "ENTER PRODUCT DESCRIPTION"
-        description = gets.chomp
-      if !description.empty?
-        good_description = 1
-      else puts "ERROR. INVALID INPUT."
-      end
-    end
-    
-    until good_cost == 1      
-      puts "ENTER PRODUCT COST"
-        cost = gets.to_i
-      if cost >= 0
-        good_cost = 1
-      else puts "ERROR. INVALID INPUT."
-      end
-    end
-    
-    until good_quantity == 1      
-      puts "ENTER PRODUCT QUANTITY"
-        quantity = gets.to_i
-      if quantity >= 0
-        good_quantity = 1
-      else puts "ERROR. INVALID INPUT."
-      end
-    end
-    
-    location_list
-    
-    until good_location_id == 1  
-      puts "ASSIGN NEW PRODUCT TO A LOCATION(BY NUMBER)"
-        location_id = gets.to_i
-      if Location.find("locations", location_id) != nil
-        good_location_id = 1
-      else puts "ERROR. LOCATION DOES NOT EXIST."
-      end
-    end
-    
-    category_list
-    
-    until good_category_id == 1      
-      puts "ASSIGN NEW PRODUCT TO A CATEGORY(BY NUMBER)"
-        category_id = gets.to_i
-      if Category.find("categories", category_id) != nil
-        good_category_id = 1
-      else puts "ERROR. CATEGORY DOES NOT EXIST."
-      end
-    end
-    
-    new_product = Product.new({"serial_number" => serial_number, "name" => name,
-       "description" => description, "cost" => cost, "quantity" => quantity,
-        "location_id" => location_id, "category_id" => category_id })
-    
-    puts "PRESS 1 TO SAVE PRODUCT"
-    puts "PRESS ANYTHING OTHER THAN 1 TO CANCEL CREATION"
-    verify = gets.chomp
-    if verify == "1"
-      new_product.insert("products")
-      puts "PRODUCT SAVED, PRODUCT ID IS #{new_product.id}"
-    else puts "PROCESS CANCELLED"
-    end
+     until good_serial == 1
+       puts "ENTER PRODUCT SERIAL NUMBER"
+       serial_number = gets.chomp
+       if !serial_number.empty?
+         good_serial = 1
+       else puts "ERROR. INVALID INPUT."
+       end
+     end
+  
+     until good_name == 1      
+       puts "ENTER PRODUCT NAME"
+       name = gets.chomp
+       if !name.empty?
+         good_name = 1
+       else puts "ERROR. INVALID INPUT."
+       end
+     end
+  
+     until good_description == 1      
+       puts "ENTER PRODUCT DESCRIPTION"
+         description = gets.chomp
+       if !description.empty?
+         good_description = 1
+       else puts "ERROR. INVALID INPUT."
+       end
+     end
+  
+     until good_cost == 1      
+       puts "ENTER PRODUCT COST"
+         cost = gets.to_i
+       if cost >= 0
+         good_cost = 1
+       else puts "ERROR. INVALID INPUT."
+       end
+     end
+  
+     until good_quantity == 1      
+       puts "ENTER PRODUCT QUANTITY"
+         quantity = gets.to_i
+       if quantity >= 0
+         good_quantity = 1
+       else puts "ERROR. INVALID INPUT."
+       end
+     end
+  
+     location_list
+  
+     until good_location_id == 1  
+       puts "ASSIGN NEW PRODUCT TO A LOCATION(BY NUMBER)"
+         location_id = gets.to_i
+       if Location.find("locations", location_id) != nil
+         good_location_id = 1
+       else puts "ERROR. LOCATION DOES NOT EXIST."
+       end
+     end
+  
+     category_list
+  
+     until good_category_id == 1      
+       puts "ASSIGN NEW PRODUCT TO A CATEGORY(BY NUMBER)"
+         category_id = gets.to_i
+       if Category.find("categories", category_id) != nil
+         good_category_id = 1
+       else puts "ERROR. CATEGORY DOES NOT EXIST."
+       end
+     end
+  
+     new_product = Product.new({"serial_number" => serial_number, "name" => name,
+        "description" => description, "cost" => cost, "quantity" => quantity,
+         "location_id" => location_id, "category_id" => category_id })
+  
+     puts "PRESS 1 TO SAVE PRODUCT"
+     puts "PRESS ANYTHING OTHER THAN 1 TO CANCEL CREATION"
+     verify = gets.chomp
+     if verify == "1"
+       new_product.insert("products")
+       puts "PRODUCT SAVED, PRODUCT ID IS #{new_product.id}"
+       puts "HERE IS THE NEW PRODUCTS LIST:\n"
+       product_list
+     else puts "PROCESS CANCELLED"
+     end
   end
   
   def edit_product
@@ -235,14 +239,14 @@ module DriverMethods
   def add_category
     puts "ENTER CATEGORY NAME"
     name = gets.chomp
-    location = Location.new("name" => name)
-    puts "YOU HAVE ENTERED #{location.name}"
+    category = Category.new("name" => name)
+    puts "YOU HAVE ENTERED #{category.name}"
     puts "IF THIS IS CORRECT PRESS 1"
     puts "IF THIS IS INCORRECT PRESS ANYTHING OTHER THAN 1 TO CANCEL CREATION"
     verify = gets.chomp
     if verify == "1"
-      location.insert("locations")
-      puts "LOCATION SAVED TO ID ##{location.id}"
+      category.insert("categories")
+      puts "LOCATION SAVED TO ID ##{category.id}"
     else puts "PROCESS CANCELLED"
     end
   end  
@@ -368,11 +372,8 @@ module DriverMethods
     search = gets.chomp 
     case search
     when "1"
-      fields = Location.list_attributes_with_id
-      fields.each do |f|
-        puts "----#{f}----"
-      end
       puts "ENTER SEARCH FIELD"
+      puts "(id, name)"
       field = gets.chomp
       puts "ENTER SEARCH TERM"
       look_for = gets.chomp 
@@ -382,11 +383,8 @@ module DriverMethods
       end
       
     when "2"
-      fields = Product.list_attributes_with_id
-      fields.each do |f|
-        puts "----#{f}----"
-      end
       puts "ENTER SEARCH FIELD"
+      puts "(id, serial_number, name, description, cost, quantity, location_id, category_id)"
       field = gets.chomp
       puts "ENTER SEARCH TERM"
       look_for = gets.chomp
@@ -396,11 +394,8 @@ module DriverMethods
       end
       
     when "3"
-      fields = Category.list_attributes_with_id
-      fields.each do |f|
-        puts "----#{f}----"
-      end
       puts "ENTER SEARCH FIELD"
+      puts "(id, name)"
       field = gets.chomp
       puts "ENTER SEARCH TERM"
       look_for = gets.chomp
