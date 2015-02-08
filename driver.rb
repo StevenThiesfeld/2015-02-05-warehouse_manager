@@ -9,7 +9,7 @@ require_relative "product"
 require_relative "driver_methods"
 include DriverMethods
 
-binding.pry
+#binding.pry
 
 menu_prompt
 
@@ -29,6 +29,8 @@ until input.downcase == "quit"
       edit_location
     when "3"
       delete_location
+    when "4"
+      fetch_location
     else puts "RETURNING TO MAIN MENU"
     end
     
@@ -42,6 +44,8 @@ until input.downcase == "quit"
       edit_product
     when "3"
       delete_product
+    when "4"
+      fetch_product
     else puts "RETURNING TO MAIN MENU"
     end
     
@@ -55,11 +59,24 @@ until input.downcase == "quit"
       edit_category
     when "3"
       delete_category
+    when "4"
+      fetch_category
     else puts "RETURNING TO MAIN MENU"
     end
     
   when "4"
     search_submenu
+    sub_input = gets.chomp
+    case sub_input
+    when "1"
+      general_search
+    when "2"
+      search_by_location
+    when "3"
+      search_by_category
+    else puts "RETURNING TO MAIN MENU"
+    end
+    
  else
    if input.downcase == "quit"
      puts "GOOD-BYE"
@@ -68,6 +85,3 @@ until input.downcase == "quit"
  end
   menu_prompt 
 end
-
-
-  

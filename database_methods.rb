@@ -78,7 +78,7 @@ module DatabaseMethods
     DATABASE.execute("UPDATE #{table} SET #{query_string} WHERE id = #{id}")
   end
   
-  def list_attributes
+  def list_attributes_no_id
     attributes = []
 
     # Example  [:@serial_number, :@name, :@description]
@@ -90,7 +90,11 @@ module DatabaseMethods
   end
   
   def display_attributes
-    attributes = list_attributes
+     attributes = []
+     instance_variables.each do |i|
+       # Example  :@name
+       attributes << i.to_s.delete("@")
+     end
     puts "FIELD---------VALUE"
     attributes.each do |a|
       puts "#{a}--------#{self.send(a)}"
@@ -142,9 +146,9 @@ module ClassMethods
     end
       
     search_results = []
-    results = DATABASE.execute("SELECT * FROM products WHERE #{search_for} = #{search}")
+    results = DATABASE.execute("SELECT * FROM #{table} WHERE #{search_for} = #{search}")
     results.each do |r|
-      search_results << self.new(r)
+      search_results << self.new(r) if r != nil
     end
     search_results
   end
@@ -170,6 +174,17 @@ module ClassMethods
     result = DATABASE.execute("SELECT * FROM #{table} WHERE id = #{id_to_find}")
     record_details = result[0]
     self.new(record_details) if record_details != nil
+  end
+  
+  def list_attributes_with_id
+    attributes = []
+
+    # Example  [:@serial_number, :@name, :@description]
+    instance_variables.each do |i|
+      # Example  :@name
+      attributes << i.to_s.delete("@")
+    end
+    attributes
   end
   
 end#module_end

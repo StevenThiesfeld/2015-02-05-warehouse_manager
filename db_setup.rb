@@ -4,7 +4,7 @@ DATABASE.execute("CREATE TABLE IF NOT EXISTS locations (id INTEGER PRIMARY KEY,
                   name TEXT NOT NULL)")
                   
 DATABASE.execute("CREATE TABLE IF NOT EXISTS categories (id INTEGER PRIMARY KEY,
-                 name TEXT NOT NULL, manufacturer TEXT)")
+                 name TEXT NOT NULL)")
                   
 DATABASE.execute("CREATE TABLE IF NOT EXISTS products (id INTEGER PRIMARY KEY, 
                   serial_number TEXT NOT NULL, name TEXT NOT NULL, description TEXT,

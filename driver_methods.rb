@@ -3,11 +3,11 @@ module DriverMethods
   def menu_prompt
     puts "WELCOME TO THE WAREHOUSE MANAGEMENT SUITE"
     puts "-"*60
-    puts "TO CREATE, EDIT OR DELETE A LOCATION: TYPE 1"
+    puts "TO CREATE, EDIT, DELETE OR FETCH A LOCATION: TYPE 1"
     puts "-"*60
-    puts "TO CREATE, EDIT OR DELETE A PRODUCT: TYPE 2"
+    puts "TO CREATE, EDIT, DELETE OR FETCH A PRODUCT: TYPE 2"
     puts "-"*60
-    puts "TO CREATE, EDIT OR DELETE A CATEGORY: TYPE 3"
+    puts "TO CREATE, EDIT, DELETE OR FETCH A CATEGORY: TYPE 3"
     puts "-"*60
     puts "TO RUN A SEARCH: TYPE 4"
     puts "-"*60
@@ -21,23 +21,27 @@ module DriverMethods
     puts "-"*60
     puts "TO DELETE A #{var}: TYPE 3"
     puts "-"*60
+    puts "TO FETCH A SPECIFIC #{var}: TYPE 4"
+    puts "-"*60
     puts "TO RETURN TO THE PREVIOUS MENU: TYPE ANYTHING ELSE"
   end  
 
   def add_location
-    puts "ENTER LOCATION NAME"
-    name = gets.chomp
-    location = Location.new("name" => name)
-    puts "YOU HAVE ENTERED #{location.name}"
-    puts "IF THIS IS CORRECT PRESS 1"
-    puts "IF THIS IS INCORRECT PRESS ANYTHING OTHER THAN 1 TO CANCEL CREATION"
-    verify = gets.chomp
-    if verify == "1"
-      location.insert("locations")
-      puts "LOCATION SAVED TO ID ##{location.id}"
-    else puts "PROCESS CANCELLED"
-    end
-  end
+     puts "ENTER LOCATION NAME"
+     name = gets.chomp
+     location = Location.new("name" => name)
+     puts "YOU HAVE ENTERED #{location.name}"
+     puts "IF THIS IS CORRECT PRESS 1"
+     puts "IF THIS IS INCORRECT PRESS ANYTHING OTHER THAN 1 TO CANCEL CREATION"
+     verify = gets.chomp
+     if verify == "1"
+       location.insert("locations")
+       puts "LOCATION SAVED TO ID ##{location.id}"
+       puts "HERE IS THE NEW LOCATIONS LIST:\n"
+       location_list
+     else puts "PROCESS CANCELLED"
+     end
+   end
   
   def edit_location
     location_list
@@ -65,19 +69,29 @@ module DriverMethods
   end
   
   def delete_location
-    location_list
-    puts "ENTER LOCATION ID TO DELETE"
-    location_to_delete = gets.to_i
-    puts "ARE YOU SURE YOU WANT TO DO THIS?"
-    puts "PRESS 1 TO CONTINUE, PRESS ANYTHING OTHER THAN 1 TO CANCEL DELETION"
-    verify = gets.chomp
-    if verify == "1"
-      Location.delete_record(location_to_delete)
-      puts "LOCATION ##{location_to_delete} DELETED"
-    else puts "PROCESS CANCELLED"
-    end
-  end    
-  
+     location_list
+     puts "ENTER LOCATION ID TO DELETE"
+     location_to_delete = gets.to_i
+     puts "ARE YOU SURE YOU WANT TO DO THIS?"
+     puts "PRESS 1 TO CONTINUE, PRESS ANYTHING OTHER THAN 1 TO CANCEL DELETION"
+     verify = gets.chomp
+     if verify == "1"
+       Location.delete_record(location_to_delete)
+       puts "LOCATION ##{location_to_delete} DELETED"
+     else puts "PROCESS CANCELLED"
+     end
+     puts "UPDATED LOCATIONS LIST:\n"
+     location_list
+   end
+   
+   def fetch_location
+     location_list
+     puts "TYPE THE ID OF WHAT YOU WANT TO SEE IN DETAIL"
+     fetch = gets.to_i
+     result = Location.find("locations", fetch)
+     result.display_attributes
+   end
+   
   def add_product
     good_serial = 0
     good_name = 0
@@ -189,23 +203,34 @@ module DriverMethods
     if verify == "1"
       product.save("products")
       puts "CHANGES SAVED"
+      puts "HERE IS THE UPDATED PRODUCT INFORMATION:\n"
+      product.display_attributes
     else puts "PROCESS CANCELLED"
     end
   end
   
   def delete_product
-    product_list
-    puts "ENTER PRODUCT ID TO DELETE"
-    product_to_delete = gets.to_i
-    puts "ARE YOU SURE YOU WANT TO DO THIS?"
-    puts "PRESS 1 TO CONTINUE, PRESS ANYTHING OTHER THAN 1 TO CANCEL DELETION"
-    verify = gets.chomp
-    if verify == "1"
-      Product.delete_record(product_to_delete)
-      puts "PRODUCT ##{product_to_delete} DELETED"
-    else puts "PROCESS CANCELLED"
-    end
-  end    
+     product_list
+     puts "ENTER PRODUCT ID TO DELETE"
+     product_to_delete = gets.to_i
+     puts "ARE YOU SURE YOU WANT TO DO THIS?"
+     puts "PRESS 1 TO CONTINUE, PRESS ANYTHING OTHER THAN 1 TO CANCEL DELETION"
+     verify = gets.chomp
+     if verify == "1"
+       Product.delete_record("products", product_to_delete)
+       puts "PRODUCT ##{product_to_delete} DELETED"
+       product_list
+     else puts "PROCESS CANCELLED"
+     end
+   end 
+   
+   def fetch_product
+     product_list
+     puts "TYPE THE ID OF WHAT YOU WANT TO SEE IN DETAIL"
+     fetch = gets.to_i
+     result = Product.find("products", fetch)
+     result.display_attributes
+   end   
   
   def add_category
     puts "ENTER CATEGORY NAME"
@@ -223,12 +248,51 @@ module DriverMethods
   end  
   
   def edit_category
-    
+    category_list
+    puts "ENTER CATEGORY TO EDIT(BY NUMBER)"
+    category_to_edit = gets.to_i
+    category = Category.find("categories", category_to_edit)
+    category.display_attributes
+    raw_field = ""
+    until raw_field.downcase == "done"
+      puts "ENTER FIELD TO EDIT"
+      raw_field = gets.chomp
+      puts "ENTER CHANGE"
+      raw_change = gets.chomp
+      verify_edit(category, raw_field, raw_change)
+      puts "ENTER ANOTHER FIELD TO EDIT(TYPE DONE TO FINISH)"
+      raw_field = gets.chomp
+    end
+    puts "PRESS 1 TO SAVE CHANGES, PRESS ANYTHING ELSE TO CANCEL"
+    verify = gets.chomp
+    if verify == "1"
+      category.save("categories")
+      puts "CHANGES SAVED"
+    else puts "PROCESS CANCELLED"
+    end
   end
   
   def delete_category
-    
-  end
+    category_list
+    puts "ENTER CATEGORY ID TO DELETE"
+    category_to_delete = gets.to_i
+    puts "ARE YOU SURE YOU WANT TO DO THIS?"
+    puts "PRESS 1 TO CONTINUE, PRESS ANYTHING OTHER THAN 1 TO CANCEL DELETION"
+    verify = gets.chomp
+    if verify == "1"
+      Category.delete_record(category_to_delete)
+      puts "CATEGORY ##{category_to_delete} DELETED"
+    else puts "PROCESS CANCELLED"
+    end
+  end  
+  
+  def fetch_category
+    category_list
+    puts "TYPE THE ID OF WHAT YOU WANT TO SEE IN DETAIL"
+    fetch = gets.to_i
+    result = Category.find("categories", fetch)
+    result.display_attributes
+  end   
   
   def location_list
     locations = DATABASE.execute("SELECT * FROM locations")  
@@ -252,7 +316,7 @@ module DriverMethods
   end
   
   def verify_edit(object, raw_field, raw_change)
-    if object.list_attributes.include?(raw_field)
+    if object.list_attributes_no_id.include?(raw_field)
       good_change = false
       case raw_field
       when "cost", "quantity"
@@ -276,7 +340,7 @@ module DriverMethods
         else puts "THAT CATEGORY DOES NOT EXIST"
         end  
       else 
-        if raw_change.to_i != 0
+        if raw_change.length != 0
           change = raw_change
           good_change = true
         else puts "INVALID ENTRY"
@@ -292,4 +356,82 @@ module DriverMethods
   def enter_edit(object, field, change)
     object.instance_variable_set(field, change)
   end
+  
+  def search_submenu
+    puts "TO RUN A GENERAL SEARCH PRESS 1"
+    puts "TO SEARCH FOR ALL PRODUCTS IN A LOCATION PRESS 2"
+    puts "TO SEARCH FOR ALL PRODUCTS IN A CATEGORY PRESS 3"
+  end
+  def general_search
+    puts "WHICH TABLE WOULD YOU LIKE TO SEARCH: 1-LOCATIONS, 2-PRODUCTS, OR 3-CATEGORIES?"
+    puts "-"*60
+    search = gets.chomp 
+    case search
+    when "1"
+      fields = Location.list_attributes_with_id
+      fields.each do |f|
+        puts "----#{f}----"
+      end
+      puts "ENTER SEARCH FIELD"
+      field = gets.chomp
+      puts "ENTER SEARCH TERM"
+      look_for = gets.chomp 
+      results = Location.search_where("locations", field, look_for)
+      results.each do |r|
+        r.display_attributes
+      end
+      
+    when "2"
+      fields = Product.list_attributes_with_id
+      fields.each do |f|
+        puts "----#{f}----"
+      end
+      puts "ENTER SEARCH FIELD"
+      field = gets.chomp
+      puts "ENTER SEARCH TERM"
+      look_for = gets.chomp
+      results = Product.search_where("products", field, look_for)
+      results.each do |r|
+        r.display_attributes
+      end
+      
+    when "3"
+      fields = Category.list_attributes_with_id
+      fields.each do |f|
+        puts "----#{f}----"
+      end
+      puts "ENTER SEARCH FIELD"
+      field = gets.chomp
+      puts "ENTER SEARCH TERM"
+      look_for = gets.chomp
+      results = Category.search_where("categories", field, look_for)
+      results.each do |r|
+        r.display_attributes
+      end
+    else puts "RETURNING TO MAIN MENU"
+    end
+  end
+     
+  def search_by_category
+    category_list
+    puts "SELECT A CATEGORY TO SEE ALL PRODUCTS IN THAT CATEGORY(USE ID)"
+    search_in = gets.to_i
+    results = Product.search_where("products", "category_id", search_in)
+    results.each do |r|
+      r.display_attributes
+    end
+  end
+  
+  def search_by_location
+    location_list
+    puts "SELECT A LOCATION TO SEE ALL PRODUCTS IN THAT LOCATION(USE ID)"
+    search_in = gets.to_i
+    results = Product.search_where("products", "category_id", search_in)
+    results.each do |r|
+      r.display_attributes
+    end
+  end
+     
+  
+    
 end#module_end

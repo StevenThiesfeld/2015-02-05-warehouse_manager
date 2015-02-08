@@ -1,6 +1,8 @@
 class Category
   include DatabaseMethods
   extend ClassMethods
+  attr_reader :id
+  attr_accessor :name
   
   def initialize(options)
     @id = options["id"]

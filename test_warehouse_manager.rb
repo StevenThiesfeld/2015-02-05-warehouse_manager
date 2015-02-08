@@ -107,16 +107,23 @@ class TestDriver < Minitest::Test
         "description" => "sliced", "cost" => 300, "quantity" => 100,
          "location_id" => 1, "category_id" => 2})
     t1.insert("products")    
-    verify_edit(t1, "location_id", 20)
-    assert_equal(t1.location_id, 20)
+    verify_edit(t1, "name", "pie")
+    assert_equal("pie", t1.name)
   end
   def test_verify_edit_fails
     t1 = Product.new({"serial_number" => "77sdfd7", "name" => "bread",
         "description" => "sliced", "cost" => 300, "quantity" => 100,
          "location_id" => 1, "category_id" => 2})
     t1.insert("products")    
-    verify_edit(t1, "qlaplhit", 20)
+    verify_edit(t1, "quantity", 20)
     assert_equal(t1.quantity, 20)
+  end
+  
+  def test_edit_category
+    c1 = Category.new({"name" => "test category"})
+    c1.insert("categories")
+    verify_edit(c1, "name", "test")
+    assert_equal(c1.name, "test")
   end
 end#classend
     
