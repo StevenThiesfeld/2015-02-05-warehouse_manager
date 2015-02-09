@@ -161,9 +161,9 @@ module DriverMethods
     location = Location.find("locations", location_to_edit)
     location.display_attributes
     raw_field = ""
+    puts "ENTER FIELD TO EDIT"
+    raw_field = gets.chomp
     until raw_field.downcase == "done"
-      puts "ENTER FIELD TO EDIT"
-      raw_field = gets.chomp
       puts "ENTER CHANGE"
       raw_change = gets.chomp
       verify_edit(location, raw_field, raw_change)
@@ -370,9 +370,9 @@ module DriverMethods
     product = Product.find("products", product_to_edit)
     product.display_attributes
     raw_field = ""
+    puts "ENTER FIELD TO EDIT"
+    raw_field = gets.chomp
     until raw_field.downcase == "done"
-      puts "ENTER FIELD TO EDIT"
-      raw_field = gets.chomp
       puts "ENTER CHANGE"
       raw_change = gets.chomp
       verify_edit(product, raw_field, raw_change)
@@ -461,7 +461,7 @@ module DriverMethods
     verify = gets.chomp
     if verify == "1"
       category.insert("categories")
-      puts "LOCATION SAVED TO ID ##{category.id}"
+      puts "CATEGORY SAVED TO ID ##{category.id}"
     else puts "PROCESS CANCELLED"
     end
   end  
@@ -490,9 +490,9 @@ module DriverMethods
     category = Category.find("categories", category_to_edit)
     category.display_attributes
     raw_field = ""
+    puts "ENTER FIELD TO EDIT"
+    raw_field = gets.chomp
     until raw_field.downcase == "done"
-      puts "ENTER FIELD TO EDIT"
-      raw_field = gets.chomp
       puts "ENTER CHANGE"
       raw_change = gets.chomp
       verify_edit(category, raw_field, raw_change)
