@@ -1,18 +1,33 @@
+# Module: DatabaseMethods
+#
+# Tracks items in the grocery warehouse.
+#
+# Attributes:
+#  
+#
+#
+# Public Methods:
+# #insert
+# #save
+# #list_attributes_no_id
+# #display_attributes
+# #
+# 
 module DatabaseMethods
   
   # Public: insert
-    # Inserts the newly created item into the database.
-    #
-    # Parameters:
-    # table               - String: the table being added to.
-    # attributes          - Array: A list of the attributes being added.
-    # values              - Array: A list of the values of the attributes.
-    #
-    # Returns: 
-    # @id the primary key for the product key.
-    #
-    # State changes:
-    # Selected values are updated in the database.
+   # Inserts the newly created item into the database.
+   #
+   # Parameters:
+   # table               - String: the table being added to.
+   # attributes          - Array: A list of the attributes being added.
+   # values              - Array: A list of the values of the attributes.
+   #
+   # Returns: 
+   # @id the primary key for the product key.
+   #
+   # State changes:
+   # Selected values are updated in the database.
   
   def insert(table) 
     attributes = []
@@ -78,6 +93,8 @@ module DatabaseMethods
     DATABASE.execute("UPDATE #{table} SET #{query_string} WHERE id = #{id}")
   end
   
+  
+  
   def list_attributes_no_id
     attributes = []
 
@@ -88,6 +105,18 @@ module DatabaseMethods
     end
     attributes
   end
+  
+  # Public: #display_attributes
+   # Displays all the attributes for the selected rows.
+   #
+   # Parameters:
+   # attributes              - Array: an array for the column headings      
+   #
+   # Returns:
+   # nil
+   #
+   # State changes:
+   # none.
   
   def display_attributes
      attributes = []

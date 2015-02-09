@@ -1,5 +1,48 @@
+# Module: DriverMethodss
+#
+# Runs the methods for each menu chose the user makes.
+#
+# Attributes:
+#
+# Public Methods:
+# #menu_prompt
+# #submenu
+# #add_location
+# #edit_location
+# #delete_location
+# #fetch_location
+# #add_product
+# #edit_product
+# #delete_product
+# #fetch_product
+# #add_category   
+# #edit_category  
+# #delete_category  
+# #fetch_category
+# #location_list
+# #product_list
+# #category_list
+# #verify_edit
+# #enter_edit
+# #search_submenu 
+# #general_search
+# #search_by_category
+# #search_by_location
+#
 module DriverMethods
   
+  # Public: #menu_prompt
+   # Prints out the main menu.
+   #
+   # Parameters:
+   # none 
+   #
+   # Returns:
+   # nil.
+   #
+   # State changes:
+   # none
+   
   def menu_prompt
     puts "WELCOME TO THE WAREHOUSE MANAGEMENT SUITE"
     puts "-"*60
@@ -14,6 +57,18 @@ module DriverMethods
     puts "TYPE QUIT TO EXIT THE PROGRAM"
   end
   
+  # Public: #submenu
+   # Calls the method to create new players, creates a new Game object, and then calls determine_winner to display the winner.
+   #
+   # Parameters:
+   # none 
+   #
+   # Returns:
+   # nil.
+   #
+   # State changes:
+   # none
+   
   def submenu(var)
     puts "TO CREATE A NEW #{var}: TYPE 1"
     puts "-"*60
@@ -25,6 +80,19 @@ module DriverMethods
     puts "-"*60
     puts "TO RETURN TO THE PREVIOUS MENU: TYPE ANYTHING ELSE"
   end  
+
+  # Public: #add_location
+   # Adds a new location to the locations table.
+   #
+   # Parameters:
+   # name        - String:  name of the location to be added.
+   # location    - Object:  new location object.
+   # verify      - String:  verifies good input.
+   # Returns:
+   # nil.
+   #
+   # State changes:
+   # New Location is added to the database.
 
   def add_location
      puts "ENTER LOCATION NAME"
@@ -70,6 +138,62 @@ module DriverMethods
      end
   end
   
+  # Public: #edit_location
+  # Edits an existing location entry.
+  #
+  # Parameters:
+  # location_to_edit    - Integer: The location selection to edit. 
+  # location            - Object: The location object. 
+  # raw_field           - String: The existing field to be edited.
+  # raw_change          - String: The new value for that field.
+  # verify              _ String: Verifies good input. 
+  #
+  # Returns:
+  # nil.
+  #
+  # State changes:
+  # The updated object is saved to the database.
+  
+  def edit_location
+    location_list
+    puts "ENTER LOCATION TO EDIT(BY NUMBER)"
+    location_to_edit = gets.to_i
+    location = Location.find("locations", location_to_edit)
+    location.display_attributes
+    raw_field = ""
+    until raw_field.downcase == "done"
+      puts "ENTER FIELD TO EDIT"
+      raw_field = gets.chomp
+      puts "ENTER CHANGE"
+      raw_change = gets.chomp
+      verify_edit(location, raw_field, raw_change)
+      puts "ENTER ANOTHER FIELD TO EDIT(TYPE DONE TO FINISH)"
+      raw_field = gets.chomp
+    end
+    puts "PRESS 1 TO SAVE CHANGES, PRESS ANYTHING ELSE TO CANCEL"
+    verify = gets.chomp
+    if verify == "1"
+      location.save("locations")
+      puts "CHANGES SAVED"
+      puts "HERE IS THE UPDATED LOCATIONS LIST:\n"
+      location_list
+    else puts "PROCESS CANCELLED"
+    end
+  end
+  
+  # Public: #delete_location
+   # Deletes a location from the locations table.
+   #
+   # Parameters:
+   # location_to_delete      - Integer: The location ID of the location to                                          delete. 
+   # verify                  _ String: If "1", confirms the deletion, otherwise, cancels.
+   #
+   # Returns:
+   # nil.
+   #
+   # State changes:
+   # The selected location is deleted from the database.
+   
   def delete_location
      location_list
      puts "ENTER LOCATION ID TO DELETE"
@@ -84,7 +208,19 @@ module DriverMethods
      end
      puts "UPDATED LOCATIONS LIST:\n"
      location_list
-   end
+  end
+  
+  # Public: #fetch_location
+   # Fetches the location the user wants to see.
+   #
+   # Parameters:
+   # fetch         - Integer: The selection for which location to fetch.
+   #
+   # Returns:
+   # nil.
+   #
+   # State changes:
+   # none
    
    def fetch_location
      location_list
@@ -93,6 +229,31 @@ module DriverMethods
      result = Location.find("locations", fetch)
      result.display_attributes
    end
+   
+   # Public: #add_product
+    # Adds a new product to the products table.
+    #
+    # Parameters:
+    # good_serial
+    # good_name
+    # good_description
+    # good_cost
+    # good_quantity
+    # good_location_id
+    # good_category_id        - Integer:  All to verify each piece of data is in                                      valid parameters.
+    # serial_number           - String: The serial id for the new product.
+    # name                    - String: The name for the new product.
+    # description             - String: The description for the new product.
+    # cost                    - Integer: The cost for the new product.
+    # quantity                - Integer: The current quantity for the new product.
+    # location_id             - Integer: The location_id for the new product.
+    # category_id             - Integer: The category_id for the new product.
+    #
+    # Returns:
+    # nil.
+    #
+    # State changes:
+    # New product is added to the products table.
    
    def add_product
      good_serial = 0
@@ -186,6 +347,22 @@ module DriverMethods
      end
   end
   
+  # Public: #edit_product
+  # Edits the fields of an existing product.
+  #
+  # Parameters:
+  # product_to_edit     - Integer: The product selection to edit. 
+  # product             - Object: The product object. 
+  # raw_field           - String: The existing field to be edited.
+  # raw_change          - String: The new value for that field.
+  # verify              _ String: Verifies good input. 
+  #
+  # Returns:
+  # nil.
+  #
+  # State changes:
+  # The updated object is saved to the database.
+  
   def edit_product
     product_list
     puts "ENTER PRODUCT TO EDIT(BY NUMBER)"
@@ -213,6 +390,19 @@ module DriverMethods
     end
   end
   
+  # Public: #delete_product
+   # Deletes a product from the locations table.
+   #
+   # Parameters:
+   # product_to_delete      - Integer: The product ID of the location to                                          delete. 
+   # verify                  _ String: If "1", confirms the deletion, otherwise, cancels.
+   #
+   # Returns:
+   # nil.
+   #
+   # State changes:
+   # The selected product is deleted from the database.
+  
   def delete_product
      product_list
      puts "ENTER PRODUCT ID TO DELETE"
@@ -226,15 +416,40 @@ module DriverMethods
        product_list
      else puts "PROCESS CANCELLED"
      end
-   end 
+  end 
+  
+  # Public: #fetch_product
+    # Fetches the product the user wants to see.
+    #
+    # Parameters:
+    # fetch         - Integer: The selection for which product to fetch.
+    #
+    # Returns:
+    # nil.
+    #
+    # State changes:
+    # none
    
-   def fetch_product
+  def fetch_product
      product_list
      puts "TYPE THE ID OF WHAT YOU WANT TO SEE IN DETAIL"
      fetch = gets.to_i
      result = Product.find("products", fetch)
      result.display_attributes
    end   
+   
+   # Public: #add_category
+   # Adds a new category to the categories table.
+   #
+   # Parameters:
+   # name        - String:  name of the category to be added.
+   # category    - Object:  new category object.
+   # verify      - String:  verifies good input.
+   # Returns:
+   # nil.
+   #
+   # State changes:
+   # New Category is added to the database.
   
   def add_category
     puts "ENTER CATEGORY NAME"
@@ -250,6 +465,23 @@ module DriverMethods
     else puts "PROCESS CANCELLED"
     end
   end  
+  
+  # Public: #edit_category
+   # Edits an existing category entry.
+   #
+   # Parameters:
+   # category_to_edit    - Integer: The category selection to edit. 
+   # category            - Object: The category object. 
+   # raw_field           - String: The existing field to be edited.
+   # raw_change          - String: The new value for that field.
+   # verify              _ String: Verifies good input. 
+   #
+   # Returns:
+   # nil.
+   #
+   # State changes:
+   # The updated object is saved to the database.
+  
   
   def edit_category
     category_list
@@ -276,6 +508,19 @@ module DriverMethods
     end
   end
   
+  # Public: #delete_category
+  # Deletes a category from the locations table.
+  #
+  # Parameters:
+  # category_to_delete      - Integer: The category ID of the location to                                          delete. 
+  # verify                  _ String: If "1", confirms the deletion, otherwise,                                   cancels.
+  #
+  # Returns:
+  # nil.
+  #
+  # State changes:
+  # The selected category is deleted from the database.
+  
   def delete_category
     category_list
     puts "ENTER CATEGORY ID TO DELETE"
@@ -290,13 +535,37 @@ module DriverMethods
     end
   end  
   
+  # Public: #fetch_category
+   # Fetches the category the user wants to see.
+   #
+   # Parameters:
+   # fetch         - Integer: The selection for which category to fetch.
+   #
+   # Returns:
+   # nil.
+   #
+   # State changes:
+   # none
+  
   def fetch_category
     category_list
     puts "TYPE THE ID OF WHAT YOU WANT TO SEE IN DETAIL"
     fetch = gets.to_i
     result = Category.find("categories", fetch)
     result.display_attributes
-  end   
+  end 
+  
+  # Public: #location_list
+   # Displays the id and name of all the items in the locations table.
+   #
+   # Parameters:
+   # locations =  
+   #
+   # Returns:
+   # The locations table.
+   #
+   # State changes:
+   # none  
   
   def location_list
     locations = DATABASE.execute("SELECT * FROM locations")  
@@ -305,6 +574,18 @@ module DriverMethods
     end
   end
   
+  # Public: #category_list
+   # Displays the id and name of all the items in the categories table.
+   #
+   # Parameters:
+   # categories =  
+   #
+   # Returns:
+   # The categories table.
+   #
+   # State changes:
+   # none
+  
   def category_list
     categories = DATABASE.execute("SELECT * FROM categories")  
     categories.each do |c|
@@ -312,12 +593,38 @@ module DriverMethods
     end
   end
   
+  # Public: #product_list
+  # Displays the id and name of all the items in the products table.
+  #
+  # Parameters:
+  # products =  
+  #
+  # Returns:
+  # The products table.
+  #
+  # State changes:
+  # none
+  
   def product_list
     products = DATABASE.execute("SELECT * FROM products")
     products.each do |p|
       puts "#{p["id"]}---------#{p["name"]}"
     end
   end
+  
+  # Public: #verify_edit
+    # Verifies the field and attempted change are valid when editing a table.
+    #
+    # Parameters:
+    # object                - Object:  The entry being edited
+    # raw_field             - String: The field being changed(before formatting)
+    # raw_change            - String  The attempted edit (before formatting)
+    #
+    # Returns:
+    # nil.
+    #
+    # State changes:
+    # none
   
   def verify_edit(object, raw_field, raw_change)
     if object.list_attributes_no_id.include?(raw_field)
@@ -356,16 +663,57 @@ module DriverMethods
     else puts "INVALID FIELD"
     end
   end
+  
+  # Public: #enter_edit
+   # Finalizes a verified edit.
+   #
+   # Parameters:
+   # object   - Object: the entry being edited.
+   # field    - String: a field that's been approved for edit.
+   # change   - String or Integer: the approved edit.  
+   #
+   # Returns:
+   # nil
+   #
+   # State changes:
+   # Sets the object's attribute to the edited value
 
   def enter_edit(object, field, change)
     object.instance_variable_set(field, change)
   end
+  
+  # Public: #search_submenu
+   # Displays the submenu for the search option.
+   #
+   # Parameters:
+   # none
+   #
+   # Returns:
+   # nil
+   #
+   # State changes:
+   # none
   
   def search_submenu
     puts "TO RUN A GENERAL SEARCH PRESS 1"
     puts "TO SEARCH FOR ALL PRODUCTS IN A LOCATION PRESS 2"
     puts "TO SEARCH FOR ALL PRODUCTS IN A CATEGORY PRESS 3"
   end
+  
+  # Public: #general_search
+    # Searches the database by product, location, or category.
+    #
+    # Parameters:
+    # search                - String:
+    # fields                -   
+    # 
+    #
+    # Returns:
+    # The products table.
+    #
+    # State changes:
+    # none
+  
   def general_search
     puts "WHICH TABLE WOULD YOU LIKE TO SEARCH: 1-LOCATIONS, 2-PRODUCTS, OR 3-CATEGORIES?"
     puts "-"*60
@@ -406,6 +754,19 @@ module DriverMethods
     else puts "RETURNING TO MAIN MENU"
     end
   end
+  
+  # Public: #search_by_category
+    # Displays the all products in a selected category.
+    #
+    # Parameters:
+    # search_in               - Integer:
+    # results                 - Array of Product objects
+    #
+    # Returns:
+    # The products in the selected category.
+    #
+    # State changes:
+    # none 
      
   def search_by_category
     category_list
@@ -417,6 +778,19 @@ module DriverMethods
     end
   end
   
+  # Public: #search_by_location
+    # Displays the all products in a selected location.
+    #
+    # Parameters:
+    # search_in               - Integer:
+    # results                 - Array of Product objects
+    #
+    # Returns:
+    # The products in the selected location.
+    #
+    # State changes:
+    # none
+  
   def search_by_location
     location_list
     puts "SELECT A LOCATION TO SEE ALL PRODUCTS IN THAT LOCATION(USE ID)"
@@ -426,7 +800,5 @@ module DriverMethods
       r.display_attributes
     end
   end
-     
-  
-    
+       
 end#module_end
