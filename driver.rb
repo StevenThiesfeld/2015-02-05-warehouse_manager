@@ -11,10 +11,11 @@ include DriverMethods
 
 #binding.pry
 
-menu_prompt
 
 input = ""
 until input.downcase == "quit"
+  menu_prompt 
+  
   puts "ENTER MENU SELECTION"
   input = gets.chomp
 
@@ -83,5 +84,4 @@ until input.downcase == "quit"
    else puts "INVALID INPUT, TRY AGAIN"
    end
  end
-  menu_prompt 
 end

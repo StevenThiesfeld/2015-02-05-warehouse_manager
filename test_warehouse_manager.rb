@@ -70,7 +70,7 @@ class TestLocation < Minitest::Test
   
   def setup
     DATABASE.execute("DELETE from products")
-    #DATABASE.execute("DELETE from catergories")
+    #DATABASE.execute("DELETE from categories")
     DATABASE.execute("DELETE from locations")
   end
   
@@ -98,7 +98,7 @@ class TestDriver < Minitest::Test
   
   def setup
     DATABASE.execute("DELETE from products")
-    #DATABASE.execute("DELETE from catergories")
+    #DATABASE.execute("DELETE from categories")
     DATABASE.execute("DELETE from locations")
   end
   
