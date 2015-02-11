@@ -1,0 +1,40 @@
+<h1> PRODUCT CREATION PAGE</h1>
+
+<form action="/confirm_creation">
+  
+  <label for="serial_number">Serial Number</label>
+  <input type="text" name= "serial_number">
+  <br><br> 
+  <label for="name">Name</label>
+  <input type="text" name="name">
+  <br><br>  
+  <label for="description">Description</label>
+  <textarea value="description" name="description" rows="3" cols="30"> </textarea>
+  <br><br>
+  <label for="cost">Cost</label>
+  <input type="number" min="0" name="cost">
+  <br><br>
+  <label for="quantity">Quantity</label>
+  <input type="number" min="0" name="quantity">
+  <br>
+  <label for="location_id">Assigned Location</label>
+  <select name="location_id">
+    <%locations = Location.all("locations")%>
+    <%locations.each do |loc|  %>
+      <option value="<%= loc.id %>"><%="#{loc.id}--#{loc.name}"%></option>
+    <%end  %>
+  </select>
+  <br><br>
+  <label for="category_id">Assigned Category</label>
+  <select name="category_id">
+    <%categories = Category.all("categories")  %>
+    <%categories.each do |cat|  %>
+      <option value="<%= cat.id %>"><%="#{cat.id}--#{cat.name}"%></option>
+    <%end  %>
+  </select>
+  <br><br>
+  <input type="submit" value="Submit">
+</form>
+  
+  
+  
