@@ -1,0 +1,20 @@
+<h1>Products, Products, Products!!!</h1>
+<table>
+  <th> ID </th>
+  <th> Name </th>
+  <%@products.each do |product|%>
+  <tr>
+    <td><%= product.id %></td>
+    <td><%= product.name %></td>
+    <% table = product.display_attributes  %>
+    <td><button onclick="details('<%= table %>')">More Details</button></td>
+  </tr>
+  <%end%>
+</table>
+  
+<script>
+  function details (table){
+    var  myWindow = window.open("", "", "width=600, height=400");
+    myWindow.document.write(table);
+ }
+</script>

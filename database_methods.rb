@@ -106,6 +106,17 @@ module DatabaseMethods
     attributes
   end
   
+  def list_attributes_with_id
+    attributes = []
+
+    # Example  [:@serial_number, :@name, :@description]
+    instance_variables.each do |i|
+      # Example  :@name
+      attributes << i.to_s.delete("@")
+    end
+    attributes
+  end
+  
   # Public: #display_attributes
    # Displays all the attributes for the selected rows.
    #
@@ -124,10 +135,12 @@ module DatabaseMethods
        # Example  :@name
        attributes << i.to_s.delete("@")
      end
-    puts "FIELD---------VALUE"
+    table = "<table><tr><th>FIELD</th><th>VALUE</th></tr>"
     attributes.each do |a|
-      puts "#{a}--------#{self.send(a)}"
+      table += "<tr><td>#{a}</td><td>#{self.send(a)}</td></tr>"
     end
+    table +="</table>"
+    table
   end
     
   
@@ -203,6 +216,15 @@ module ClassMethods
     result = DATABASE.execute("SELECT * FROM #{table} WHERE id = #{id_to_find}")
     record_details = result[0]
     self.new(record_details) if record_details != nil
+  end
+  
+  def all(table)
+    locations = []
+    results = DATABASE.execute("SELECT * FROM #{table}")
+    results.each do |result|
+      locations << self.new(result) if result != nil
+    end
+    locations
   end
   
   

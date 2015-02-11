@@ -1,0 +1,20 @@
+<h1>Categories, Categories, Categories!!!</h1>
+<table>
+  <th> ID </th>
+  <th> Name </th>
+  <%@categories.each do |category|%>
+  <tr>
+    <td><%= category.id %></td>
+    <td><%= category.name %></td>
+    <% table = category.display_attributes  %>
+    <td><button onclick="details('<%= table %>')">More Details</button></td>
+  </tr>
+  <%end%>
+</table>
+  
+<script>
+  function details (table){
+    var  myWindow = window.open("", "", "width=600, height=400");
+    myWindow.document.write(table);
+ }
+</script>
