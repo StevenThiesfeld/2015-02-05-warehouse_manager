@@ -6,7 +6,11 @@
   <a href="/products">Products Index</a> |
   <a href="/categories">Categories Index</a> |
 </nav>
-
+<br>
+<% if @search_results != nil %>
+<%= "<p>#{@search_results}</p>" %>
+<% else  %>
+<% end %>
 <table>
   <th> ID </th>
   <th> Name </th>

@@ -28,17 +28,35 @@ get "/" do
 end
 
 get "/locations" do
-  locations
+  if params != {}
+    @locations = Location.search_where(params["table"], params["search_for"], params["user_search"])
+    @search_results = "Showing results for search#{params["user_search"]} in the field #{params["search_for"]}"
+  else
+    locations
+    @search_results = nil
+  end
   erb :locations
 end
   
 get "/products" do
-  products
+  if params != {}
+    @products = Product.search_where(params["table"], params["search_for"], params["user_search"])
+    @search_results = "Showing results for search #{params["user_search"]} in the field #{params["search_for"]}."
+  else
+    products
+    @search_results = nil
+  end
   erb :products
 end
 
 get "/categories" do
-  categories
+  if params != {}
+    @categories = Category.search_where(params["table"], params["search_for"], params["user_search"])
+    @search_results = "Showing results for search #{params["user_search"]} in the field #{params["search_for"]}"
+  else
+    categories
+    @search_results = nil
+  end  
   erb :categories
 end
 
@@ -137,13 +155,12 @@ get "/delete_location" do
 end
 
 get "/confirm_delete_location" do
-  Location.delete_record("locations", params["id"])
+  Location.delete_record(params["id"])
   locations
   erb :locations
 end
 
 get "/error" do
-  binding.pry
   erb :error
 end
 
@@ -160,9 +177,13 @@ get "/delete_category" do
 end
 
 get "/confirm_delete_category" do
-  Category.delete_record("categories", params["id"])
+  Category.delete_record(params["id"])
   categories
   erb :categories
+end
+
+get "/search" do
+  
 end
   
   

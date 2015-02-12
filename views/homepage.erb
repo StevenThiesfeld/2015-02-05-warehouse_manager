@@ -1,7 +1,51 @@
 <h1>WELCOME TO THE WAREHOUSE MANAGEMENT SUITE</h1>
 
 <nav>
-  <a href="/locations">Locations</a> |
-  <a href="/products">Products</a> |
-  <a href="/categories">Categories</a>
+  <a href="/locations">Locations Index</a> |
+  <a href="/products">Products Index</a> |
+  <a href="/categories">Categories Index</a> |
 </nav>
+<br>
+<br>
+<br>
+<p>Search for Products</p>
+<form action="/products">
+  <input type="hidden" name="table" value="products">
+  <select name="search_for">
+    <option value="id">ID</option>
+    <option value="name">Name</option>
+    <option value="description">Description</option>
+    <option value="cost">Cost</option>
+    <option value="quantity">Quantity</option>
+    <option value="location_id">Location</option>
+    <option value="category_id">Category</option>
+  </select>
+  <label for="user_search">Enter Search</label>
+  <input type="text" name="user_search">
+  <input type="submit" value="Submit">
+</form>
+<br>
+<p>Search for Locations</p>
+<form action="/locations">
+  <input type="hidden" name="table" value="locations">
+  <select name="search_for">
+    <option value="id">ID</option>
+    <option value="name">Name</option>
+  </select>
+  <label for="user_search">Enter Search</label>
+  <input type="text" name="user_search">
+  <input type="submit" value="Submit">
+</form>
+<br>
+<p>Search for Categories</p>
+<form action="/categories">
+  <input type="hidden" name="table" value="categories">
+  <select name="search_for">
+    <option value="id">ID</option>
+    <option value="name">Name</option>
+  </select>
+  <label for="user_search">Enter Search</label>
+  <input type="text" name="user_search">
+  <input type="submit" value="Submit">
+</form>
+  
