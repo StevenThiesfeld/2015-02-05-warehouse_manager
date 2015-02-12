@@ -10,7 +10,7 @@
   <input type="text" name="name" value="<%= @object_to_edit.name %>">
   <br><br>  
   <label for="description">Description</label>
-  <textarea value="<%= @object_to_edit.description %>" name="description" rows="3" cols="30"><%= "#{@object_to_edit.description}" %> </textarea>
+  <textarea value="<%= @object_to_edit.description %>" name="description" rows="1" cols="30"><%= "#{@object_to_edit.description}" %> </textarea>
   <br><br>
   <label for="cost">Cost(in cents, deal with it)</label>
   <input type="number" min="0" name="cost" value="<%= @object_to_edit.cost %>">

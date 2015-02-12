@@ -1,13 +1,13 @@
 require 'sqlite3'
 require 'pry'
-DATABASE = SQLite3::Database.new('test_warehouse_database.db')
+DATABASE = SQLite3::Database.new('database/test_warehouse_database.db')
 require 'minitest/autorun'
-require_relative "driver_methods"
-require_relative "database_methods"
-require_relative 'db_setup'
-require_relative "product"
-require_relative "location"
-require_relative "category"
+require_relative "../database/database_methods"
+require_relative "../helper_modules/model_helper"
+require_relative '../database/db_setup'
+require_relative "../models/product"
+require_relative "../models/location"
+require_relative "../models/category"
 
 class TestProduct < Minitest::Test
   
@@ -93,8 +93,8 @@ class TestLocation < Minitest::Test
   
 end#classend
 
-class TestDriver < Minitest::Test
-  include DriverMethods
+class TestModelHelper < Minitest::Test
+  include ModelHelper
   
   def setup
     DATABASE.execute("DELETE from products")
@@ -102,29 +102,23 @@ class TestDriver < Minitest::Test
     DATABASE.execute("DELETE from locations")
   end
   
-  def test_verify_edit
-    t1 = Product.new({"serial_number" => "77sdfd7", "name" => "bread",
-        "description" => "sliced", "cost" => 300, "quantity" => 100,
-         "location_id" => 1, "category_id" => 2})
-    t1.insert("products")    
-    verify_edit(t1, "name", "pie")
-    assert_equal("pie", t1.name)
-  end
-  def test_verify_edit_fails
-    t1 = Product.new({"serial_number" => "77sdfd7", "name" => "bread",
-        "description" => "sliced", "cost" => 300, "quantity" => 100,
-         "location_id" => 1, "category_id" => 2})
-    t1.insert("products")    
-    verify_edit(t1, "quantity", 20)
-    assert_equal(t1.quantity, 20)
+  def test_edit_object
+    test_site = Location.new({"name" => "Test Site"})
+    params = {"name" => "it works"}
+    test_site.edit_object(params)
+    assert_equal("it works", test_site.name)
   end
   
-  def test_edit_category
-    c1 = Category.new({"name" => "test category"})
-    c1.insert("categories")
-    verify_edit(c1, "name", "test")
-    assert_equal(c1.name, "test")
+  def test_display_attributes
+    test = Product.new({"serial_number" => "77sdfd7", "name" => "bread",
+        "description" => "sliced", "cost" => 300, "quantity" => 100,
+         "location_id" => 1, "category_id" => 2})
+      
+    table = test.display_attributes
+    assert_kind_of(String, table)  
   end
+  
+  
 end#classend
     
     

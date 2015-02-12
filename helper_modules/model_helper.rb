@@ -1,6 +1,17 @@
 module ModelHelper
   
-  #Public: #edit_object
+  # #Public: #edit_object
+ #  Changes an object's attributes to the values given.
+ #
+ #  Parameters:
+ #  params     - Hash: a hash containing the attributes being changed and their values.
+ #  thaw_field - String: an unfrozen version of the field key with @ inserted.
+ #
+ #  Returns:
+ #  nil
+ #
+ #  State Changes:
+ #  Changes all attributes in the object that are present in params.
   
   
   def edit_object(params)
