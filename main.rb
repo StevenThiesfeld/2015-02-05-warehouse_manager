@@ -1,11 +1,11 @@
 require 'pry'
 require 'sqlite3'
-DATABASE = SQLite3::Database.new('warehouse_database.db')
-require_relative "db_setup"
-require_relative "database_methods"
-require_relative 'location'
-require_relative 'category'
-require_relative "product"
+DATABASE = SQLite3::Database.new('database/warehouse_database.db')
+require_relative "database/db_setup"
+require_relative "models/database_methods"
+require_relative 'models/location'
+require_relative 'models/category'
+require_relative "models/product"
 require 'sinatra'
 
 helpers do
