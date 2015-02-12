@@ -1,5 +1,8 @@
 module ModelHelper
   
+  #Public: #edit_object
+  
+  
   def edit_object(params)
     params.each do |field, value|
       thaw_field = field.dup.insert(0, "@")
@@ -8,16 +11,16 @@ module ModelHelper
   end
   
   # Public: #display_attributes
-   # Displays all the attributes for the selected rows.
+   # Returns the attributes of an object as a table.
    #
    # Parameters:
    # attributes              - Array: an array for the column headings      
    #
    # Returns:
-   # nil
+   # Table -  String:  a detailed table for the object
    #
    # State changes:
-   # none.
+   # creates a new row in table for each attribute of the object.
   
   def display_attributes
      attributes = []

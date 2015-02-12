@@ -19,3 +19,7 @@ if DATABASE.execute("SELECT * FROM categories") == []
     DATABASE.execute("INSERT INTO categories (name) VALUES ('#{category}')")
   end
 end
+
+if DATABASE.execute("SELECT * FROM locations") == []
+  DATABASE.execute("INSERT INTO locations (name) VALUES ('Default Location') ")
+end

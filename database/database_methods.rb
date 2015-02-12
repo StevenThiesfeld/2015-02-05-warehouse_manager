@@ -167,13 +167,25 @@ module ClassMethods
     self.new(record_details) if record_details != nil
   end
   
+  # # Public: .all
+  # Creates an object for every entry from a table inside of an array.
+  #
+  # Parameters:
+  # table           - String: the table objects are pulled from.
+  #
+  # Returns:
+  # objects - Array: an array of objects
+  #
+  # State Changes:
+  # Pushes created objects into the objects array.
+  
   def all(table)
-    locations = []
+    objects = []
     results = DATABASE.execute("SELECT * FROM #{table}")
     results.each do |result|
-      locations << self.new(result) if result != nil
+      objects << self.new(result) if result != nil
     end
-    locations
+    objects
   end
   
   
