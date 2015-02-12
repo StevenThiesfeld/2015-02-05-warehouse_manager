@@ -1,0 +1,38 @@
+<h1> PRODUCT EDITOR</h1>
+
+<h3><%= @object_to_edit.id %>---<%= @object_to_edit.name %></h3>
+<form action="/confirm_product_edit">
+  <input type="hidden" name="id" value="<%= @object_to_edit.id %>">
+  <label for="serial_number">Serial Number</label>
+  <input type="text" name= "serial_number" value="<%= @object_to_edit.serial_number %>">
+  <br><br> 
+  <label for="name">Name</label>
+  <input type="text" name="name" value="<%= @object_to_edit.name %>">
+  <br><br>  
+  <label for="description">Description</label>
+  <textarea value="<%= @object_to_edit.description %>" name="description" rows="3" cols="30"><%= "#{@object_to_edit.description}" %> </textarea>
+  <br><br>
+  <label for="cost">Cost(in cents, deal with it)</label>
+  <input type="number" min="0" name="cost" value="<%= @object_to_edit.cost %>">
+  <br><br>
+  <label for="quantity">Quantity</label>
+  <input type="number" min="0" name="quantity" value="<%= @object_to_edit.quantity %>">
+  <br>
+  <label for="location_id">Assigned Location</label>
+  <select name="location_id">
+    <%locations = Location.all("locations")%>
+    <%locations.each do |loc|  %>
+      <option <%= "selected='selected'" if loc.id == @object_to_edit.location_id %> value="<%= loc.id %>"><%="#{loc.id}--#{loc.name}"%></option>
+    <%end  %>
+  </select>
+  <br><br>
+  <label for="category_id">Assigned Category</label>
+  <select name="category_id">
+    <%categories = Category.all("categories")  %>
+    <%categories.each do |cat|  %>
+      <option <%= "selected='selected'" if cat.id == @object_to_edit.category_id %> value="<%= cat.id %>"><%="#{cat.id}--#{cat.name}"%></option>
+    <%end  %>
+  </select>
+  <br><br>
+  <input type="submit" value="Submit">
+</form>

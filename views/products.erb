@@ -16,6 +16,8 @@
     <td><%= product.name %></td>
     <% table = product.display_attributes  %>
     <td><button onclick="details('<%= table %>')">More Details</button></td>
+    <td><a href="/edit_product?id=<%= product.id %>">Edit</a></td>
+    <td><a href="/delete_product?id=<%= product.id %>">Delete</a></td>
   </tr>
   <%end%>
 </table>

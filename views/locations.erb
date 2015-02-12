@@ -16,6 +16,8 @@
     <td><%= location.name %></td>
     <% table = location.display_attributes  %>
     <td><button onclick="details('<%= table %>')">More Details</button></td>
+    <td><a href="/edit_location?id=<%= location.id %>">Edit</a></td>
+    <td><a href="/delete_location?id=<%= location.id %>">Delete</a></td>
   </tr>
   <%end%>
   </table>

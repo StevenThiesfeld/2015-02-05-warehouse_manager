@@ -16,6 +16,8 @@
     <td><%= category.name %></td>
     <% table = category.display_attributes  %>
     <td><button onclick="details('<%= table %>')">More Details</button></td>
+    <td><a href="/edit_category?id=<%= category.id %>">Edit</a></td>
+    <td><a href="/delete_category?id=<%= category.id %>">Delete</a></td>
   </tr>
   <%end%>
 </table>

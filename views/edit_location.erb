@@ -1,0 +1,9 @@
+<h1> LOCATION EDITOR</h1>
+
+<h3><%= @object_to_edit.id %>---<%= @object_to_edit.name %></h3>
+<form action="/confirm_location_edit">
+  <input type="hidden" name="id" value="<%= @object_to_edit.id %>">
+  <label for="name">Enter new Name</label>
+  <input type="text" name="name" value="<%=@object_to_edit.name%>">
+  <input type="submit" value="Submit">
+</form>
