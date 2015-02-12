@@ -84,7 +84,6 @@ get "/edit_category" do
 end
 
 get "/confirm_location_edit" do
-  binding.pry
   @edited_location = Location.find("locations", params["id"])
   params.each do |field, value|
     thaw_field = field.dup.insert(0, "@")
@@ -95,7 +94,6 @@ get "/confirm_location_edit" do
 end
 
 get "/confirm_product_edit" do
-  binding.pry
   @edited_product = Product.find("products", params["id"])
   params.each do |field, value|
     thaw_field = field.dup.insert(0, "@")
@@ -106,7 +104,6 @@ get "/confirm_product_edit" do
 end
 
 get "/confirm_category_edit" do
-  binding.pry
   @edited_category = Category.find("categories", params["id"])
   params.each do |field, value|
     thaw_field = field.dup.insert(0, "@")
@@ -116,9 +113,57 @@ get "/confirm_category_edit" do
   erb :confirm_category_edit
 end
   
-  
-  
-  
+get "/delete_product" do
+  @product_to_delete = Product.find("products", params["id"])
+  erb :delete_product
+end
+
+get "/confirm_delete_product" do
+  Product.delete_record("products", params["id"])
+  products
+  erb :products
+end
+
+before "/delete_location" do
+  @products = Product.search_where("products", "location_id", params["id"])
+  if @products != []
+    request.path_info = "/error"
+  end
+end
+
+get "/delete_location" do
+  @location_to_delete = Location.find("locations", params["id"])
+  erb :delete_location
+end
+
+get "/confirm_delete_location" do
+  Location.delete_record("locations", params["id"])
+  locations
+  erb :locations
+end
+
+get "/error" do
+  binding.pry
+  erb :error
+end
+
+before "/delete_category" do
+  @products = Product.search_where("products", "category_id", params["id"])
+  if @products != []
+    request.path_info = "/error"
+  end
+end
+
+get "/delete_category" do
+  @category_to_delete = Category.find("categories", params["id"])
+  erb :delete_category
+end
+
+get "/confirm_delete_category" do
+  Category.delete_record("categories", params["id"])
+  categories
+  erb :categories
+end
   
   
   

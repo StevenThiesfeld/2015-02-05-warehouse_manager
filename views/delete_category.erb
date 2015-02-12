@@ -1,0 +1,9 @@
+<h1>WARNING WARNING THIS IS A BIG DEAL!!!</h1>
+<h1>NO TAKE BACKS, ARE YOU SURE???</h1>
+
+<h3>Delete <%= @category_to_delete.name %>?</h3>
+<br>
+<%= @category_to_delete.display_attributes %>
+<br><br>
+
+<h2><a href="confirm_delete_category?id=<%= @category_to_delete.id %>">YES, LET IT BURN!</a>-------<a href="/categories">NO, TAKE ME BACK TO CATEGORIES!</a></h2>
