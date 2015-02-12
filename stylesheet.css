@@ -1,11 +1,13 @@
 p { 
-  font-family: "Lucida Console"; 
+  font: monospace; 
 } 
 
 h1 {
-  font-family: "Lucida Console";
+  font: monospace;
+  color: orange;
+  text-align: center;
 }
 
 table {
-  font-style: Lucida;
+  font: monospace;
 }
