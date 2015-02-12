@@ -25,6 +25,7 @@
 # 
 
 class Product
+  include ModelHelper
   include DatabaseMethods
   extend ClassMethods
   attr_reader :id

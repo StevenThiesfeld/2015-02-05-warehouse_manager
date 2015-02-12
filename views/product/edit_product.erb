@@ -20,16 +20,14 @@
   <br>
   <label for="location_id">Assigned Location</label>
   <select name="location_id">
-    <%locations = Location.all("locations")%>
-    <%locations.each do |loc|  %>
+    <%@locations.each do |loc|  %>
       <option <%= "selected='selected'" if loc.id == @object_to_edit.location_id %> value="<%= loc.id %>"><%="#{loc.id}--#{loc.name}"%></option>
     <%end  %>
   </select>
   <br><br>
   <label for="category_id">Assigned Category</label>
   <select name="category_id">
-    <%categories = Category.all("categories")  %>
-    <%categories.each do |cat|  %>
+    <%@categories.each do |cat|  %>
       <option <%= "selected='selected'" if cat.id == @object_to_edit.category_id %> value="<%= cat.id %>"><%="#{cat.id}--#{cat.name}"%></option>
     <%end  %>
   </select>

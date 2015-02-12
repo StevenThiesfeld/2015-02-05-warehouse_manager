@@ -2,7 +2,8 @@ require 'pry'
 require 'sqlite3'
 DATABASE = SQLite3::Database.new('database/warehouse_database.db')
 require_relative "database/db_setup"
-require_relative "models/database_methods"
+require_relative "database/database_methods"
+require_relative "helper_modules/model_helper"
 require_relative 'models/location'
 require_relative 'models/category'
 require_relative "models/product"
@@ -30,7 +31,7 @@ end
 get "/locations" do
   if params != {}
     @locations = Location.search_where(params["table"], params["search_for"], params["user_search"])
-    @search_results = "Showing results for search#{params["user_search"]} in the field #{params["search_for"]}"
+    @search_results = "<p>Showing results for search #{params["user_search"]} in the field #{params["search_for"]}</p>"
   else
     locations
     @search_results = nil
@@ -41,7 +42,7 @@ end
 get "/products" do
   if params != {}
     @products = Product.search_where(params["table"], params["search_for"], params["user_search"])
-    @search_results = "Showing results for search #{params["user_search"]} in the field #{params["search_for"]}."
+    @search_results = "<p>Showing results for search #{params["user_search"]} in the field #{params["search_for"]}.</p>"
   else
     products
     @search_results = nil
@@ -52,7 +53,7 @@ end
 get "/categories" do
   if params != {}
     @categories = Category.search_where(params["table"], params["search_for"], params["user_search"])
-    @search_results = "Showing results for search #{params["user_search"]} in the field #{params["search_for"]}"
+    @search_results = "<p>Showing results for search #{params["user_search"]} in the field #{params["search_for"]}</p>"
   else
     categories
     @search_results = nil
@@ -65,6 +66,8 @@ get "/create_location" do
 end
 
 get "/create_product" do
+  @locations = Location.all("locations")
+  @categories = Category.all("categories")  
   erb :create_product
 end
 
@@ -79,7 +82,7 @@ get "/confirm_creation" do
   elsif request.referrer == "http://127.0.0.1:4567/create_product"
     @new_creation = Product.new(params)
     @new_creation.insert("products")
-  elsif request.referrer == "/http://127.0.0.1:4567/create_category"
+  elsif request.referrer == "http://127.0.0.1:4567/create_category"
     @new_creation = Category.new(params)
     @new_creation.insert("categories")
   end
@@ -93,6 +96,8 @@ end
 
 get "/edit_product" do
   @object_to_edit = Product.find("products", params["id"])
+  @locations = Location.all("locations")
+  @categories = Category.all("categories") 
   erb :edit_product
 end
 
@@ -101,32 +106,23 @@ get "/edit_category" do
   erb :edit_category
 end
 
-get "/confirm_location_edit" do
+get "/confirm_location_edit" do 
   @edited_location = Location.find("locations", params["id"])
-  params.each do |field, value|
-    thaw_field = field.dup.insert(0, "@")
-    @edited_location.instance_variable_set(thaw_field, value) if value != ""
-  end
+  @edited_location.edit_object(params)
   @edited_location.save("locations")
   erb :confirm_location_edit
 end
 
-get "/confirm_product_edit" do
+get "/confirm_product_edit" do  
   @edited_product = Product.find("products", params["id"])
-  params.each do |field, value|
-    thaw_field = field.dup.insert(0, "@")
-    @edited_product.instance_variable_set(thaw_field, value) if value != ""
-  end
+  @edited_product.edit_object(params)
   @edited_product.save("products")
   erb :confirm_product_edit
 end
 
-get "/confirm_category_edit" do
+get "/confirm_category_edit" do  
   @edited_category = Category.find("categories", params["id"])
-  params.each do |field, value|
-    thaw_field = field.dup.insert(0, "@")
-    @edited_category.instance_variable_set(thaw_field, value) if value != nil
-  end
+  @edited_category.edit_object(params)
   @edited_category.save("categories")
   erb :confirm_category_edit
 end
@@ -181,15 +177,3 @@ get "/confirm_delete_category" do
   categories
   erb :categories
 end
-
-get "/search" do
-  
-end
-  
-  
-  
-  
-  
-
-
-

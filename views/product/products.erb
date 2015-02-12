@@ -7,10 +7,7 @@
   <a href="/categories">Categories Index</a> |
 </nav>
 <br>
-<% if @search_results != nil %>
-<%= "<p>#{@search_results}</p>" %>
-<% else  %>
-<% end %>
+<%= @search_results %>
 <table>
   <th> ID </th>
   <th> Name </th>
@@ -18,8 +15,7 @@
   <tr>
     <td><%= product.id %></td>
     <td><%= product.name %></td>
-    <% table = product.display_attributes  %>
-    <td><button onclick="details('<%= table %>')">More Details</button></td>
+    <td><button onclick="details('<%= product.display_attributes %>')">More Details</button></td>
     <td><a href="/edit_product?id=<%= product.id %>">Edit</a></td>
     <td><a href="/delete_product?id=<%= product.id %>">Delete</a></td>
   </tr>
