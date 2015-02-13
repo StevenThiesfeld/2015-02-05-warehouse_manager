@@ -10,17 +10,22 @@ require_relative "models/product"
 require 'sinatra'
 
 helpers do
-  def locations
+  def set_locations
     @locations = Location.all("locations")
   end
   
-  def products
+  def set_products
     @products = Product.all("products")
   end
   
-  def categories
+  def set_categories
     @categories = Category.all("categories")
   end
+  
+  def set_search_message
+    @search_results = "<p>Showing results for search #{params["user_search"]} in the field #{params["search_for"]}</p>"
+  end
+  
 end#helpers_end
 
 
@@ -31,7 +36,7 @@ end
 get "/locations" do
   if params != {}
     @locations = Location.search_where(params["table"], params["search_for"], params["user_search"])
-    @search_results = "<p>Showing results for search #{params["user_search"]} in the field #{params["search_for"]}</p>"
+    set_search_message
   else
     locations
     @search_results = nil
@@ -42,7 +47,7 @@ end
 get "/products" do
   if params != {}
     @products = Product.search_where(params["table"], params["search_for"], params["user_search"])
-    @search_results = "<p>Showing results for search #{params["user_search"]} in the field #{params["search_for"]}.</p>"
+    set_search_message
   else
     products
     @search_results = nil
@@ -53,7 +58,7 @@ end
 get "/categories" do
   if params != {}
     @categories = Category.search_where(params["table"], params["search_for"], params["user_search"])
-    @search_results = "<p>Showing results for search #{params["user_search"]} in the field #{params["search_for"]}</p>"
+    set_search_message
   else
     categories
     @search_results = nil
@@ -76,13 +81,13 @@ get "/create_category" do
 end
 
 get "/confirm_creation" do
-  if request.referrer == "http://127.0.0.1:4567/create_location"
+  if request.referrer.include?("/create_location")
     @new_creation = Location.new(params) 
     @new_creation.insert("locations")
-  elsif request.referrer == "http://127.0.0.1:4567/create_product"
+  elsif request.referrer.include?("/create_product")
     @new_creation = Product.new(params)
     @new_creation.insert("products")
-  elsif request.referrer == "http://127.0.0.1:4567/create_category"
+  elsif request.referrer.include?("/create_category")
     @new_creation = Category.new(params)
     @new_creation.insert("categories")
   end
