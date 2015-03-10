@@ -1,5 +1,7 @@
-require 'pry'
-require 'sqlite3'
+require 'rubygems'
+require 'bundler/setup'
+Bundler.require(:default)
+
 DATABASE = SQLite3::Database.new('database/warehouse_database.db')
 require_relative "database/db_setup"
 require_relative "database/database_methods"
@@ -7,7 +9,6 @@ require_relative "helper_modules/model_helper"
 require_relative 'models/location'
 require_relative 'models/category'
 require_relative "models/product"
-require 'sinatra'
 
 helpers do
   def set_locations
